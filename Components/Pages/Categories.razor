@@ -1,10 +1,10 @@
 ﻿@page "/category"
 @layout MainLayout
 
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Category> CategoryRepository;
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<ActivityLog> ActivityLogRepository;
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Spare> SpareRepository;
-@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService
+@inject BikeSparesInventorySystem.Repositories.Repository<Category> CategoryRepository;
+@inject BikeSparesInventorySystem.Repositories.Repository<ActivityLog> ActivityLogRepository;
+@inject BikeSparesInventorySystem.Repositories.Repository<Spare> SpareRepository;
+@inject BikeSparesInventorySystem.Services.AuthService AuthService
 
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService;

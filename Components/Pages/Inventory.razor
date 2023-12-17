@@ -1,16 +1,11 @@
 ﻿@attribute [Route(Inventory.Route)]
 @layout MainLayout
 
-<<<<<<< HEAD:Pages/Inventory.razor
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Spare> SpareRepository;
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Category> CategoryRepository;
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<ActivityLog> ActivityLogRepository;
-@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
-=======
+@inject BikeSparesInventorySystem.Repositories.Repository<Spare> SpareRepository;
 @inject BikeSparesInventorySystem.Repositories.Repository<Spare> SpareRepository;
 @inject BikeSparesInventorySystem.Repositories.Repository<ActivityLog> ActivityLogRepository;
+@inject BikeSparesInventorySystem.Repositories.Repository<Category> CategoryRepository;
 @inject BikeSparesInventorySystem.Services.AuthService AuthService;
->>>>>>> 0532de98351da3b3fe75f1eff513988959ab12ff:Components/Pages/Inventory.razor
 
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService

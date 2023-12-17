@@ -35,25 +35,8 @@ internal static class Seeder
             .RuleFor(x => x.AvailableQuantity, y => y.Random.Int(min = 0, max = 3456));
         return spareFaker.GenerateBetween(min, max);
     }
-    public static ICollection<Category> GenerateCategories(ICollection<User> users, int min, int max)
-	{
-		DateTime endDate = DateTime.Now;
-		DateTime startDate = endDate.Subtract(TimeSpan.FromDays(365 * 2));
-		List<User> adminUsers = users.Where(x => x.Role == UserRole.Admin).ToList();
-        Faker<Category> CategoryFaker = new Faker<Category>()
-            .RuleFor(x => x.Name, y => y.Commerce.ProductName())
-            .RuleFor(x => x.Quantity, y => y.Random.Int(min: 100, max: 400))
-            .RuleFor(x => x.CreatedAt, y => y.Date.Between(startDate, endDate))
-            .FinishWith((x, y) =>
-            {
-                User user = x.PickRandom(users);
-                y.ActedBy = user.Id;
-            });
 
-			return CategoryFaker.GenerateBetween(min, max);
-    }
-
-    public static ICollection<ActivityLog> GenerateActivityLogs(ICollection<User> users, ICollection<Spare> spares, ICollection<Category> categories, int min, int max)
+    public static ICollection<ActivityLog> GenerateActivityLogs(ICollection<User> users, ICollection<Spare> spares, int min, int max)
     {
         DateTime endDate = DateTime.Now;
         DateTime startDate = endDate.Subtract(TimeSpan.FromDays(365 * 2));

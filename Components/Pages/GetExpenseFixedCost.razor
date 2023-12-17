@@ -1,8 +1,8 @@
 ﻿@page "/expenses"
 @layout MainLayout
 
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Expenses> ExpensesRepository;
-@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
+@inject BikeSparesInventorySystem.Repositories.Repository<Expenses> ExpensesRepository;
+@inject BikeSparesInventorySystem.Services.AuthService AuthService;
 
 <MudTable Items="@_expenses"
           FixedHeader="true"

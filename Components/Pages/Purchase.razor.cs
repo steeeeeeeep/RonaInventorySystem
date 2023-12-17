@@ -1,5 +1,4 @@
-﻿namespace BikeSparesInventorySystem.Pages;
-
+﻿namespace BikeSparesInventorySystem.Components.Pages;
 public partial class Purchase
 {
     public const string Route = "/purchase";

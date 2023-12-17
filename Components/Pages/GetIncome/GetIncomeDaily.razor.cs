@@ -1,5 +1,4 @@
-﻿namespace BikeSparesInventorySystem.Pages.GetIncome;
-
+﻿namespace BikeSparesInventorySystem.Components.Pages.GetIncome; 
 public partial class GetIncomeDaily
 {
     public const string Route = "/dailyIncome";

@@ -1,4 +1,4 @@
-﻿namespace BikeSparesInventorySystem.Pages;
+﻿namespace BikeSparesInventorySystem.Components.Pages;
 
 public partial class Categories
 {
