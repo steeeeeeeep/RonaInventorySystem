@@ -1,19 +1,21 @@
 @inject BikeSparesInventorySystem.Services.AuthService AuthService;
 
-<MudDrawerHeader Class="my-4 position-sticky">
+<MudDrawerHeader Class="my-4">
 	<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
 		<MudIcon Icon="@Icons.Material.Filled.Shop" Color="Color.Primary" Size="Size.Large" />
 		<MudText Color="Color.Primary" Typo="Typo.h5" Style="font-weight: bold">JAS</MudText>
 	</MudStack>
 </MudDrawerHeader>
-<MudNavMenu Bordered="true" Color="Color.Primary" Margin="Margin.Normal" Style="scrollbar-width: 1px; scrollbar-color: inherit; scrollbar-base-color:transparent">
+<MudNavMenu Bordered="true" Color="Color.Primary" Margin="Margin.Normal">		
 	@if (AuthService.IsUserAdmin())
 	{
 		<MudNavLink Href="@Dashboard.Route" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
 	}
-	<MudNavGroup Icon="@Icons.Material.Filled.Inventory" Title="Inventory" Class="overflow-hidden">
+	<MudTreeView T="string" ExpandOnClick="true" Width="10">
+		<MudTreeViewItem Value="@("Inventory")">
 			<MudNavLink Href="@Inventory.Route">Products</MudNavLink>
 			<MudNavLink Href="@Categories.Route">Product Category</MudNavLink>
+<<<<<<< HEAD:Components/Layouts/NavMenu.razor
 	</MudNavGroup>
 	<MudNavGroup Icon="@Icons.Material.Filled.EventAvailable" Title="Sales" Class="overflow-hidden">
 		<MudNavLink Href="@Miner.Route">Today's Order</MudNavLink>
@@ -22,6 +24,12 @@
 		<MudNavLink Href="@GetIncomeSummary.Route">Income Summary</MudNavLink>
 	</MudNavGroup>
 	<MudNavLink Href="@GetExpenseFixedCost.Route" Icon="@Icons.Material.Filled.Payments">Expenses</MudNavLink>
+=======
+		</MudTreeViewItem>
+	</MudTreeView>
+	<MudNavLink Href="@Miner.Route" Icon="@Icons.Material.Filled.PersonAdd">Miners</MudNavLink>
+	<MudNavLink Href="@Purchase.Route" Icon="@Icons.Material.Filled.ShoppingCart">Purchases</MudNavLink>
+>>>>>>> parent of 60d5c91 (add and modify some functionality):Shared/NavMenu.razor
 	<MudNavLink Href="@ActivityLogs.Route" Icon="@Icons.Material.Filled.Approval">Activity Logs</MudNavLink>
 	@if (AuthService.IsUserAdmin())
 	{

@@ -1,6 +1,7 @@
-﻿@page "/orders"
+﻿@page "/Orders"
 @layout MainLayout
 
+<<<<<<< HEAD:Components/Pages/Order.razor
 @inject BikeSparesInventorySystem.Repositories.Repository<Miners> MinersRepository
 @inject BikeSparesInventorySystem.Repositories.Repository<Sales> SalesRepository
 @inject BikeSparesInventorySystem.Services.AuthService AuthService
@@ -132,3 +133,7 @@
     </PagerContent>
 </MudTable>
 </MudPaper>
+=======
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Orders> OrdersRepository;
+@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService
+>>>>>>> parent of 60d5c91 (add and modify some functionality):Pages/Order.razor

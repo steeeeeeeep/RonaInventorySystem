@@ -1,5 +1,9 @@
+<<<<<<< HEAD:Components/Dialogs/AddPurchaseDialog.razor
 ﻿@inject BikeSparesInventorySystem.Repositories.Repository<Purchases> PurchaseRepository
 @inject BikeSparesInventorySystem.Repositories.Repository<Sales> SalesRepository
+=======
+﻿@inject BikeSparesInventorySystem.Data.Repositories.Repository<Purchases> PurchaseRepository
+>>>>>>> parent of 60d5c91 (add and modify some functionality):Shared/Dialogs/AddPurchaseDialog.razor
 
 <MudDialog>
     <DialogContent>
@@ -13,9 +17,6 @@
                 </MudItem>
                 <MudItem xs="6">
                     <MudTextField @bind-Value="Items" Placeholder="Items" Label="Items" Required />
-                </MudItem>
-                <MudItem xs="12">
-                     <MudTextField @bind-Value="Vendor" Placeholder="Vendor" Label="Vendor" />
                 </MudItem>
                 <MudItem xs="6">
                      <MudNumericField @bind-Value="Amount" Placeholder="Amount" Label="Amount" Adornment="Adornment.Start" AdornmentText="Php" Required />
