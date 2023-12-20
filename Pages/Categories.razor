@@ -35,7 +35,7 @@
     <ToolBarContent>
         @if (AuthService.IsUserAdmin())
         {
-            <MudFab class="me-4" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Label="Add Product" DisableElevation="true" OnClick="AddDialog" />
+            <MudFab class="me-4" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Label="Add Category" DisableElevation="true" OnClick="AddDialog" />
             <MudStack Row="true">
                 <ImportButton T="Category" ChangeParentState="StateHasChanged" />
                 <ExportButton T="Category" />
@@ -53,9 +53,9 @@
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Category, object>(x=>x.CreatedAt)">Action</MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Product">@context.Name</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
 
-        <MudTd>@Products.Count(p => p.CategoryId == context.Id)</MudTd>
+        <MudTd DataLabel="Count">@Products.Count(p => p.CategoryId == context.Id)</MudTd>
         <MudTd DataLabel="CreatedAt">@context.CreatedAt.ToString("MM/dd/yyyy")</MudTd>
         
     </RowTemplate>   
