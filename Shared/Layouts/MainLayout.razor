@@ -13,13 +13,12 @@
                 <MudText Typo="Typo.body1">@AuthService.CurrentUser.FullName</MudText>                
             </MudChip>
         </MudTooltip>
-        <SyncDataButton />
         <DarkModeButton />
         <LogoutButton />
     </MudStack>  
 </MudAppBar>
 <MudDrawerContainer>
-    <MudDrawer @bind-Open="@_drawerOpen" Fixed="false" Elevation="1" Variant="@DrawerVariant.Responsive" OpenMiniOnHover="true" PreserveOpenState Class="overflow-hidden" Height="100vh" >
+    <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu />
     </MudDrawer>
     <MudMainContent>

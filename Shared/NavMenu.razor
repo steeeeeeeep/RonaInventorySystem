@@ -1,6 +1,6 @@
 ﻿@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
 
-<MudDrawerHeader Class="my-4 position-sticky">
+<MudDrawerHeader Class="mt-16">
 	<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
 		<MudIcon Icon="@Icons.Material.Filled.Shop" Color="Color.Primary" Size="Size.Large" />
 		<MudText Color="Color.Primary" Typo="Typo.h5" Style="font-weight: bold">JAS</MudText>
@@ -20,6 +20,7 @@
 		<MudNavLink Href="@Order.Route">Manage Orders</MudNavLink>
 		<MudNavLink Href="@Purchase.Route">Purchases</MudNavLink>
 		<MudNavLink Href="@GetIncomeSummary.Route">Income Summary</MudNavLink>
+		<MudNavLink Disabled>Payroll</MudNavLink>
 	</MudNavGroup>
 	<MudNavLink Href="@GetExpenseFixedCost.Route" Icon="@Icons.Material.Filled.Payments">Expenses</MudNavLink>
 	<MudNavLink Href="@ActivityLogs.Route" Icon="@Icons.Material.Filled.Approval">Activity Logs</MudNavLink>

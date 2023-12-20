@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@IsDarkMode" />
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@IsDarkMode" Theme="_theme"/>
 <MudDialogProvider MaxWidth="MaxWidth.ExtraSmall"
                    DisableBackdropClick="true"
                    Position="DialogPosition.Center"
@@ -26,6 +26,14 @@
             StateHasChanged();
         }
     }
+
+    MudTheme _theme = new MudTheme()
+    {
+        Palette = new PaletteLight()
+        {
+            Primary = Colors.Pink.Default,
+        },
+    };
 
     internal void ToggleDarkMode()
     {
