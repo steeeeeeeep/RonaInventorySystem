@@ -14,6 +14,7 @@ internal static class JsonFileProvider
             .AddSingleton<FileProvider<Purchases>, JsonFileProvider<Purchases>>()
             .AddSingleton<FileProvider<Wages>, JsonFileProvider<Wages>>()
             .AddSingleton<FileProvider<Utilities>, JsonFileProvider<Utilities>>()
-            .AddSingleton<FileProvider<Expenses>, JsonFileProvider<Expenses>>();
+            .AddSingleton<FileProvider<Expenses>, JsonFileProvider<Expenses>>()
+            .AddSingleton<FileProvider<Invistor>, JsonFileProvider<Invistor>>();
     }
 }
