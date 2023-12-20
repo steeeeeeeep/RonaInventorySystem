@@ -1,0 +1,49 @@
+﻿@page "/invistors"
+
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Invistor> InvistorRepository
+@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
+
+<MudTable Items="Elements">
+    
+    <ColGroup>
+        <col />
+        <col />
+        <col width="400" />
+        <col />
+        <col />
+        <col/>
+        <col/>
+    </ColGroup>
+    <HeaderContent>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Invistor, object>(x=>x.FirstName)">First Name</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Invistor, object>(x=>x.LastName)">Last Name</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Invistor, object>(x=>x.Description)">Description</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Invistor, object>(x=>x.Amount)">Amount</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Invistor, object>(x=>x.Percent)">Percent</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;" />
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd Style="white-space: nowrap;" DataLabel="First Name">@context.FirstName</MudTd> 
+        <MudTd Style="white-space: nowrap;" DataLabel="Last Name">@context.LastName</MudTd> 
+        <MudTd Style="white-space: nowrap;" DataLabel="Description">@context.Description</MudTd> 
+        <MudTd Style="white-space: nowrap;" DataLabel="Amount">@context.Amount</MudTd> 
+        <MudTd Style="white-space: nowrap;" DataLabel="Percent">@context.Percent</MudTd> 
+    </RowTemplate>
+    <RowEditingTemplate>
+        <MudTd Style="white-space: nowrap;" DataLabel="First Name">
+            <MudTextField @bind-Value="@context.FirstName" />
+        </MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="Last Name">
+            <MudTextField @bind-Value="@context.LastName" />
+        </MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="Description">
+            <MudTextField @bind-Value="@context.Description" />
+        </MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="Amount" >
+            <MudTextField @bind-Value="@context.Amount" />
+        </MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="Percent">
+            <MudTextField @bind-Value="@context.Percent" />
+        </MudTd>
+    </RowEditingTemplate>
+</MudTable>
