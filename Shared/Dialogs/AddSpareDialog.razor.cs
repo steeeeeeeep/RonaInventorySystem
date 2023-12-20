@@ -6,6 +6,7 @@ public partial class AddSpareDialog
     [Parameter] public Action ChangeParentState { get; set; }
 
     private MudForm form;
+    public bool _error;
 
     private string Name;
     private string Description;
@@ -26,20 +27,32 @@ public partial class AddSpareDialog
     private async Task AddSpare()
     {
         await form.Validate();
-        if (form.IsValid)
+        if (form.IsValid && CategoryId != Guid.Empty)
         {
-            Spare spare = new()
+            try
             {
-                Name = Name,
-                Description = Description,
-                CategoryId = CategoryId,
-                Price = Price,
-            };
-            SpareRepository.Add(spare);
-            ChangeParentState.Invoke();
+                Spare spare = new()
+                {
+                    Name = Name,
+                    Description = Description,
+                    CategoryId = CategoryId,
+                    Price = Price,
+                };
+                SpareRepository.Add(spare);
+                await SpareRepository.FlushAsync();
+                ChangeParentState.Invoke();
 
-            Snackbar.Add($"Spare {Name} is Added!", Severity.Success);
-            MudDialog.Close();
+                Snackbar.Add($"Spare {Name} is Added!", Severity.Success);
+                MudDialog.Close();
+            }
+            catch (Exception ex)
+            {
+                new Exception("CategoryId is null");
+            }
+        }
+        else
+        {
+            _error = true;
         }
     }
 }

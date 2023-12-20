@@ -26,9 +26,9 @@ public partial class StockActionDialog
         }
     }
 
-    private void Submit()
+    private async Task Submit()
     {
-        Form.Validate();
+        await Form.Validate();
 
         if (Form.IsValid)
         {
@@ -58,6 +58,7 @@ public partial class StockActionDialog
             }
             ActivityLogRepository.Add(ac);
             ChangeParentState.Invoke();
+            await SpareRepository.FlushAsync();
 
             Snackbar.Add($"Spare {Spare.Name} stock's {Enum.GetName(StockAction).ToLower()}ed by {Quantity}!", Severity.Info);
             MudDialog.Close();

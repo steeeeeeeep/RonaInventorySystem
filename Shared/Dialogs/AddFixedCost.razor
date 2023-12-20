@@ -18,7 +18,13 @@
                             Required />
                  </MudItem>
                 <MudItem xs="12">
-                    <MudDatePicker @bind-Date="@dateOfExpense" ClosingDelay="1" Orientation="Orientation.Portrait" DisableToolbar="true" PickerVariant="PickerVariant.Dialog" AnchorOrigin="Origin.BottomCenter" Placeholder="Date Name" Label="Date" Required />
+                    <MudDatePicker @bind-Date="@dateOfExpense" 
+                        ClosingDelay="1" 
+                        PickerVariant="PickerVariant.Dialog" 
+                        Required Elevation="0" 
+                        Orientation="Orientation.Landscape" 
+                        Placeholder="Date Name" 
+                        Label="Date"/>
                  </MudItem>
              </MudForm>
          </MudGrid>
