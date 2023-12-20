@@ -20,6 +20,7 @@ public partial class AddCategoryDialog
             };
 
             CategoryRepository.Add(category);
+            await CategoryRepository.FlushAsync();
             ChangeParentState.Invoke();
 
             snackBar.Add($"{Name} is added!", Severity.Success);
