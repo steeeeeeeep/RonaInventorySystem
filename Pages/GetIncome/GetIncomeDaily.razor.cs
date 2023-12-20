@@ -80,8 +80,8 @@ public partial class GetIncomeDaily
                     existing.GrossSale = saleData.GrossSale;
                     existing.DailyNetIncome = existing.GrossSale - existing.Expenses - existing.Purchases;
                     existing.Tithes = existing.DailyNetIncome * (decimal).10;
-                    existing.Car = existing.DailyNetIncome * (decimal).5;
-                    existing.Charity = existing.DailyNetIncome * (decimal).5;
+                    existing.Car = existing.DailyNetIncome * (decimal).05;
+                    existing.Charity = existing.DailyNetIncome * (decimal).05;
                     existing.Profit = existing.DailyNetIncome - existing.Tithes - existing.Car - existing.Charity;
                 }
                 await SalesRepository.FlushAsync();
