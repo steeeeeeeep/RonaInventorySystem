@@ -8,7 +8,7 @@
 
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
-
+ 
 <MudTable 
     Items="@Elements" 
     FixedHeader="@Fixed_header" 
@@ -34,7 +34,12 @@
     <ToolBarContent>
         @if (AuthService.IsUserAdmin())
         {
-            <MudFab class="me-4" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Label="Add Product" DisableElevation="true" OnClick="AddDialog" />
+            <MudFab class="me-4" StartIcon="@Icons.Material.Filled.Add" 
+                Color="Colors"
+                Label="Add Product" 
+                DisableElevation="true" 
+                OnClick="AddDialog"
+                />
             <MudStack Row="true">
                 <ImportButton T="Spare" ChangeParentState="StateHasChanged" />
                 <ExportButton T="Spare" />
