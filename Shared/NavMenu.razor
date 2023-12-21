@@ -1,10 +1,6 @@
 ﻿@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
 
-<MudDrawerHeader Class="mt-16">
-	<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-		<MudIcon Icon="@Icons.Material.Filled.Shop" Color="Color.Primary" Size="Size.Large" />
-		<MudText Color="Color.Primary" Typo="Typo.h5" Style="font-weight: bold">JAS</MudText>
-	</MudStack>
+<MudDrawerHeader Class="mt-5">
 </MudDrawerHeader>
 <MudNavMenu Bordered="true" Color="Color.Primary" Margin="Margin.Normal" Style="scrollbar-width: 1px; scrollbar-color: inherit; scrollbar-base-color:transparent">
 	@if (AuthService.IsUserAdmin())
@@ -22,7 +18,9 @@
 		<MudNavLink Href="@GetIncomeSummary.Route">Income Summary</MudNavLink>
 		<MudNavLink Disabled>Payroll</MudNavLink>
 	</MudNavGroup>
+	<MudDivider DividerType="DividerType.FullWidth" Light="true"/>
 	<MudNavLink Href="@GetExpenseFixedCost.Route" Icon="@Icons.Material.Filled.Payments">Expenses</MudNavLink>
+	<MudNavLink Href="@GetInvistors.Route" Icon="@Icons.Material.Filled.PersonAdd">Invistors</MudNavLink>
 	<MudNavLink Href="@ActivityLogs.Route" Icon="@Icons.Material.Filled.Approval">Activity Logs</MudNavLink>
 	@if (AuthService.IsUserAdmin())
 	{

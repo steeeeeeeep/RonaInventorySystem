@@ -1,10 +1,35 @@
 ﻿@page "/invistors"
+@layout MainLayout
 
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Invistor> InvistorRepository
 @inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
 
-<MudTable Items="Elements">
-    
+<MudTable
+    Items="@Elements" 
+    FixedHeader="@Fixed_header" 
+    FixedFooter="@Fixed_footer"
+    Height="@(Fixed_header || Fixed_footer ? "calc(100vh - 64px - 64px - 64px)" : "")"
+    Dense="@Dense"
+    Hover="@Hover"
+    ReadOnly="@ReadOnly"
+    CanCancelEdit="@CanCancelEdit">
+
+    <ToolBarContent>
+        @if (AuthService.IsUserAdmin())
+        {
+            <MudFab class="me-4" StartIcon="@Icons.Material.Filled.Add"
+                    Color="Color.Primary"
+                    Label="Add Product"
+                    DisableElevation="true"
+                    OnClick="AddDialog" />
+            <MudStack Row="true">
+                <ImportButton T="Spare" ChangeParentState="StateHasChanged" />
+                <ExportButton T="Spare" />
+            </MudStack>
+        }
+        <MudSpacer />
+        <MudTextField @bind-Value="SearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Clearable="true"></MudTextField>
+    </ToolBarContent>
     <ColGroup>
         <col />
         <col />

@@ -2,7 +2,7 @@
 
 public partial class GetInvistors 
 {
-    public const string route = "/invistors";
+    public const string Route = "/invistors";
     private readonly bool Dense = true;
     private readonly bool Fixed_header = true;
     private readonly bool Fixed_footer = true;
@@ -27,5 +27,10 @@ public partial class GetInvistors
     {
         SetAppBarTitle.Invoke("Invistors");
         Elements = InvistorRepository.GetAll();
+    }
+
+    protected async Task AddDialog()
+    {
+
     }
 }
