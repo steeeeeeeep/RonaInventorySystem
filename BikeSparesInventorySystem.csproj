@@ -12,10 +12,10 @@
 		<EnableDefaultCssItems>false</EnableDefaultCssItems>
 
 		<!-- Display name -->
-		<ApplicationTitle>Bikare</ApplicationTitle>
+		<ApplicationTitle>JASApp</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.bikesparesinventorysystem</ApplicationId>
+		<ApplicationId>com.companyname.JAS</ApplicationId>
 		<ApplicationIdGuid>082A4B34-31E2-40AF-B128-8FFC7F395313</ApplicationIdGuid>
 
 		<!-- Versions -->
