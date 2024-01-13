@@ -5,20 +5,20 @@
         <MudGrid>
             <MudForm @ref="mudForm">
                 <MudItem xs="12">
-                    <MudTextField @bind-Value="@name" T="string" Placeholder="Expenses Namr" Label="Expenses Name" />
+                    <MudTextField @bind-Value="@Name" T="string" Placeholder="Expenses Name" Label="Expenses Name" />
                  </MudItem>
                 <MudItem xs="12">
-                    <MudTextField @bind-Value="@directCost" 
+                    <MudTextField @bind-Value="@DirectCost" 
                             Placeholder="Total Expense" 
                             Label="Total Expense" 
                             Error="@errorStatus"
-                            ErrorText="@error" 
+                            ErrorText="@Error" 
                             Variant="Variant.Text" 
                             InputType="InputType.Number" 
                             Required />
                  </MudItem>
                 <MudItem xs="12">
-                    <MudDatePicker @bind-Date="@dateOfExpense" 
+                    <MudDatePicker @bind-Date="@DateOfExpense" 
                         ClosingDelay="1" 
                         PickerVariant="PickerVariant.Dialog" 
                         Required Elevation="0" 

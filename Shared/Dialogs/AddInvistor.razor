@@ -4,7 +4,7 @@
     <DialogContent>
         <MudForm @ref="form">
             <MudTextField T="string" @bind-Value="@FirstName" Label="Firstname" Required="true" RequiredError="Firstname is required!" />
-            <MudTextField T="string" @bind-Value="@FirstName" Label="Firstname" Required="true" RequiredError="Lastname is required!" />
+            <MudTextField T="string" @bind-Value="@LastName" Label="Lastname" Required="true" RequiredError="Lastname is required!" />
             <MudTextField T="string" @bind-Value="@Description" Label="Description" Lines="5" />
             <MudTextField T="Decimal" @bind-Value="@Amount" Label="Amount" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentText="P" Validation="@(new RangeAttribute(1, 10000000) { ErrorMessage = "Price must be between 1 and 10000000"})" />
             <MudTextField T="Decimal" @bind-Value="@Percent" Label="Percent" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentText="P" Validation="@(new RangeAttribute(1, 10000000) { ErrorMessage = "Price must be between 1 and 10000000"})" />
