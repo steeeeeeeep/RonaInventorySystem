@@ -8,11 +8,11 @@ public partial class Purchase
     private readonly bool Fixed_header = true;
     private readonly bool Fixed_footer = true;
     private readonly bool Hover = true;
-    private bool ReadOnly = false;
+    private readonly bool ReadOnly = false;
     private readonly bool CanCancelEdit = true;
     private readonly bool BlockSwitch = true;
     private string SearchString;
-    private Purchases SelectedItem;
+    //private Purchases SelectedItem;
     private Purchases ElementBeforeEdit;    
 
     private readonly TableApplyButtonPosition ApplyButtonPosition = TableApplyButtonPosition.End;

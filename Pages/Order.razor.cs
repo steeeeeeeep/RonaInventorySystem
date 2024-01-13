@@ -20,12 +20,10 @@ public partial class Order
     private readonly TableEditTrigger EditTrigger = TableEditTrigger.EditButton;
     private string SearchString;
     private IEnumerable<Miners> Miners;
-    private readonly Dictionary<Guid, bool> OrderDescTrack = new();
     bool IsSelectionActive => SelectedItems?.Any() ?? false;
 
     [CascadingParameter] private Action<string> SetAppBarTitle { get; set; }
     [Parameter] public Action ChangeParentState { get; set; }
-    private MudForm form;
 
     protected sealed override void OnInitialized()
     {
@@ -52,6 +50,9 @@ public partial class Order
         }
 
         await MinersRepository.FlushAsync();
+
+        SelectedItems = null;
+
         Snackbar.Add("Successfuly Updated!", Severity.Success);
     }
 

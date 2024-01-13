@@ -47,7 +47,7 @@ public partial class AddSpareDialog
             }
             catch (Exception ex)
             {
-                new Exception("CategoryId is null");
+				_ = new Exception($"{ex}CategoryId is null");
             }
         }
         else

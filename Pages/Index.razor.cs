@@ -15,6 +15,7 @@ public partial class Index
         await _utilitiesRepository.LoadAsync();
         await _expensesRepository.LoadAsync();
         await _salesRepository.LoadAsync();
+        await _invistorRepository.LoadAsync();
         try
         {
             await _authService.CheckSession();
@@ -26,7 +27,9 @@ public partial class Index
 
         await Task.Delay(1000);
 
-        if (_authService.CurrentUser is null)
+		_userRepository.OnDebugConsoleWriteUserNames();
+
+		if (_authService.CurrentUser is null)
         {
             _navigationManager.NavigateTo(Login.Route);
         }
