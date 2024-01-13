@@ -1,6 +1,10 @@
 ﻿@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
 
-<MudDrawerHeader Class="mt-5">
+<MudDrawerHeader Class="my-4">
+	<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+		<MudIcon Icon="@Icons.Material.Filled.Shop" Color="Color.Primary" Size="Size.Large" />
+		<MudText Color="Color.Primary" Typo="Typo.h5" Style="font-weight: bold">JASApp</MudText>
+	</MudStack>
 </MudDrawerHeader>
 <MudNavMenu Bordered="true" Color="Color.Primary" Margin="Margin.Normal" Style="scrollbar-width: 1px; scrollbar-color: inherit; scrollbar-base-color:transparent">
 	@if (AuthService.IsUserAdmin())
@@ -14,17 +18,22 @@
 	<MudNavGroup Icon="@Icons.Material.Filled.EventAvailable" Title="Sales" Class="overflow-hidden">
 		<MudNavLink Href="@Miner.Route">Today's Order</MudNavLink>
 		<MudNavLink Href="@Order.Route">Manage Orders</MudNavLink>
-		<MudNavLink Href="@Purchase.Route">Purchases</MudNavLink>
 		<MudNavLink Href="@GetIncomeSummary.Route">Income Summary</MudNavLink>
-		<MudNavLink Disabled>Payroll</MudNavLink>
+	</MudNavGroup>
+	<MudNavGroup Icon="@Icons.Material.Filled.Payments">
+		<MudNavLink Href="@Purchase.Route">Purchases</MudNavLink>
+		<MudNavLink Href="@GetExpenseFixedCost.Route">Misc</MudNavLink>
 	</MudNavGroup>
 	<MudDivider DividerType="DividerType.FullWidth" Light="true"/>
-	<MudNavLink Href="@GetExpenseFixedCost.Route" Icon="@Icons.Material.Filled.Payments">Expenses</MudNavLink>
 	<MudNavLink Href="@GetInvistors.Route" Icon="@Icons.Material.Filled.PersonAdd">Invistors</MudNavLink>
-	<MudNavLink Href="@ActivityLogs.Route" Icon="@Icons.Material.Filled.Approval">Activity Logs</MudNavLink>
-	@if (AuthService.IsUserAdmin())
-	{
-		<MudNavLink Href="@Users.Route" Icon="@Icons.Material.Filled.ManageAccounts">Users</MudNavLink>
-	}
-	<MudNavLink Href="@ChangePassword.Route" Icon="@Icons.Material.Filled.Password">Change Password</MudNavLink>
+	<MudNavLink Disabled>Payroll</MudNavLink>
+	<MudDivider DividerType="DividerType.FullWidth" Light="true" />
+	<MudNavGroup Icon="@Icons.Material.Filled.Settings" Title="Settings" Class="overflow-hidden">
+		<MudNavLink Href="@ActivityLogs.Route" Icon="@Icons.Material.Filled.Approval">Activity Logs</MudNavLink>
+		@if (AuthService.IsUserAdmin())
+		{
+			<MudNavLink Href="@Users.Route" Icon="@Icons.Material.Filled.ManageAccounts">Users</MudNavLink>
+		}
+		<MudNavLink Href="@ChangePassword.Route" Icon="@Icons.Material.Filled.Password">Change Password</MudNavLink>
+	</MudNavGroup>
 </MudNavMenu>
