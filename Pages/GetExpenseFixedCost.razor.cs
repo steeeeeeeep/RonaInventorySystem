@@ -21,10 +21,10 @@ public partial class GetExpenseFixedCost
     [Parameter] public Action ChangeParentState { get; set; }
     [Inject] public IDialogService DialogService { get; set; }
 
-    private string name {  get; set; }
-    private int fixedCost { get; set; }
-    private int directCost { get; set; }
-    private DateTime dateOfExpense { get; set; }
+    //private string Name {  get; set; }
+    //private int fixedCost { get; set; }
+    //private int directCost { get; set; }
+    //private DateTime dateOfExpense { get; set; }
 
 
     protected sealed override void OnInitialized()
@@ -42,15 +42,15 @@ public partial class GetExpenseFixedCost
         await DialogService.ShowAsync<AddFixedCost>("Add Expenses", parameters);
     }
 
-    private void FilterByMonth(string a)
-    {
-        ICollection<Expenses> expenses = ExpensesRepository.GetAll();
-        if (string.IsNullOrEmpty(a))
-        {
-            _expenses = expenses;
-            return;
-        }
-        string[] date = a.Split('-');
-        _expenses = expenses.Where(d => d.CreatedAt.Year == int.Parse(date[0]) && d.CreatedAt.Month == int.Parse(date[1])).ToList();
-    }
+    //private void FilterByMonth(string a)
+    //{
+    //    ICollection<Expenses> expenses = ExpensesRepository.GetAll();
+    //    if (string.IsNullOrEmpty(a))
+    //    {
+    //        _expenses = expenses;
+    //        return;
+    //    }
+    //    string[] date = a.Split('-');
+    //    _expenses = expenses.Where(d => d.CreatedAt.Year == int.Parse(date[0]) && d.CreatedAt.Month == int.Parse(date[1])).ToList();
+    //}
 }

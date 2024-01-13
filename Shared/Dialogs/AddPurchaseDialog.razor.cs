@@ -15,7 +15,7 @@ public partial class AddPurchaseDialog
     private decimal Amount;
     private int Items;
     private DateTime ? Acquired;
-    private bool IsSaving = false;
+    private bool IsSaving;
 
     private async Task AddPurchase()
     {

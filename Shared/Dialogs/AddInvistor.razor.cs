@@ -41,10 +41,11 @@ public partial class AddInvistor
             }
             catch (Exception ex)
             {
-                new Exception("CategoryId is null");
+                _ = new Exception($"{ex}CategoryId is null");
             }
         }
     }
 
     protected void Cancel() => MudDialog.Cancel();
+
 }

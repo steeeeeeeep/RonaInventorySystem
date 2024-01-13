@@ -6,32 +6,32 @@ public partial class AddFixedCost
     [Parameter] public Action ChangeParentState { get; set; }
 
     private MudForm mudForm;
-    private string error { get; set; }
+    private string Error { get; set; }
     private bool errorStatus;
-    private int numberValue;
-    private string name {  get; set; }
-    private int fixedCost { get; set; }
-    private int directCost { get; set; }
-    private DateTime? dateOfExpense { get; set; }
+    //private int numberValue;
+    private string Name {  get; set; }
+    private int FixedCost { get; set; }
+    private int DirectCost { get; set; }
+    private DateTime? DateOfExpense { get; set; }
 
     private async Task AddExpense()
     {
         await mudForm.Validate();
         if(mudForm.IsValid)
         {
-            if (directCost == 0)
+            if (DirectCost == 0)
             {
                 errorStatus = true;
-                error = "Expenses should not be 0 \uD83D\uDE01";
+                Error = "Expenses should not be 0 \uD83D\uDE01";
             }
             else
             {
                 Expenses expenses = new()
                 {
-                    Name = name,
-                    FixedCostId = fixedCost,
-                    DirectCostId = directCost,
-                    DateOfExpense = dateOfExpense
+                    Name = Name,
+                    FixedCostId = FixedCost,
+                    DirectCostId = DirectCost,
+                    DateOfExpense = DateOfExpense
                 };
 
                 ExpensesRepository.Add(expenses);
