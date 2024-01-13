@@ -54,7 +54,7 @@
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.DailyDate)">Date</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.GrossSale)">Gross Sales</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Purchases)">Purchases</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Expenses)">Expenses</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Expenses)">Misc</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.DailyNetIncome)">Net Sales</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;">
             <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Tithes)">
@@ -103,7 +103,7 @@
             @context.GrossSale
         </MudTd>
         <MudTd DataLabel="Miners Date">
-            <MudSelect @bind-Value="_purchaseId">
+            <MudSelect @bind-Value="PurchaseId">
                 @foreach (var purchase in _Purchases)
                 {
                     <MudSelectItem Value="@purchase.Id">@purchase.CreatedAt.ToString("MMM dd, yyyy")</MudSelectItem>
@@ -111,7 +111,7 @@
             </MudSelect>
         </MudTd>
         <MudTd DataLabel="Expenses">
-            <MudSelect @bind-Value="_expenseId">
+            <MudSelect @bind-Value="ExpenseId">
                 @foreach (var expense in _Expenses)
                 {
                     <MudSelectItem Value="expense.Id">@(expense.DateOfExpense.HasValue ? expense.DateOfExpense.Value.ToString("MMM dd, yyyy") : "N/A")</MudSelectItem>
