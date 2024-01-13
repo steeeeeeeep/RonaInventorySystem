@@ -38,7 +38,7 @@ public partial class AddUserDialog
             yield return "Username is required!";
             yield break;
         }
-        if (!Regex.Match(arg, @"^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$").Success)
+        if (!MyRegex().Match(arg).Success)
         {
             yield return "Invalid Username";
         }
@@ -47,4 +47,7 @@ public partial class AddUserDialog
             yield return "Username already Exist!";
         }
     }
+
+	[GeneratedRegex("^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$")]
+	private static partial Regex MyRegex();
 }
