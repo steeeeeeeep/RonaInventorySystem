@@ -8,14 +8,12 @@ public partial class GetIncomeDaily
     private readonly bool Fixed_header = true;
     private readonly bool Fixed_footer = true;
     private readonly bool Hover = true;
-    private bool ReadOnly = false;
-    private readonly bool CanCancelEdit = true;
+    private readonly bool ReadOnly = false;
     private readonly bool BlockSwitch = true;
     private Sales SelectedItem;
     private Sales ElementBeforeEdit;
     private readonly TableApplyButtonPosition ApplyButtonPosition = TableApplyButtonPosition.End;
     private readonly TableEditButtonPosition EditButtonPosition = TableEditButtonPosition.End;
-    private readonly TableEditTrigger EditTrigger = TableEditTrigger.EditButton;
     protected Guid categoryId;
     protected int count;
     private string SearchString;
@@ -27,8 +25,8 @@ public partial class GetIncomeDaily
     [CascadingParameter]
     private Action<string> SetAppBarTitle { get; set; }
 
-    public Guid _purchaseId { get; set; }
-    public Guid _expenseId { get; set; }
+    public Guid PurchaseId { get; set; }
+    public Guid ExpenseId { get; set; }
 
     protected sealed override void OnInitialized()
     {
@@ -62,7 +60,7 @@ public partial class GetIncomeDaily
         {
             if (!_Sales.Any(x => x.DailyDate == saleData.Date) && !_Sales.Any(x => x.Id == saleData.Id))
             {
-                Sales sales = new Sales()
+                Sales sales = new()
                 {
                     GrossSale = saleData.GrossSale,
                     DailyDate = saleData.Date
@@ -98,10 +96,10 @@ public partial class GetIncomeDaily
     {
         var grossSale = SalesRepository.Get(x => x.Id, SelectedItem.Id)
                         .GrossSale;
-        var purchase = _Purchases.Where(x => x.Id == _purchaseId)
+        var purchase = _Purchases.Where(x => x.Id == PurchaseId)
                     .Select(x => x.Amount).FirstOrDefault();
 
-        var expenses = _Expenses.Where(x => x.Id == _expenseId)
+        var expenses = _Expenses.Where(x => x.Id == ExpenseId)
                     .Select(x => x.DirectCostId).FirstOrDefault();
 
         var netSale = grossSale - purchase - expenses;
@@ -116,8 +114,8 @@ public partial class GetIncomeDaily
             existingSales.Purchases = purchase;
             existingSales.Expenses = expenses;
             existingSales.Tithes = (decimal).10 * netSale;
-            existingSales.Charity = (decimal).5 * netSale;
-            existingSales.Car = (decimal).5 * netSale;
+            existingSales.Charity = (decimal).05 * netSale;
+            existingSales.Car = (decimal).05 * netSale;
             existingSales.DailyNetIncome = netSale;
             existingSales.Profit = netSale - Tithes - Charity - Car;
         }
