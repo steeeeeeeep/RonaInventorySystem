@@ -10,10 +10,12 @@
 <SeedButton SetSeedUser="SetSeedUser" />
 
 <div style="height: calc(100vh - 64px)" class="d-flex justify-center align-center">
-    <MudPaper Class="pa-6" Width="50vh">
-        <MudStack Class="mb-4" Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="2">
-            <MudIcon Icon="@Icons.Material.Filled.ShoppingBag" Color="Color.Primary" Size="Size.Large" />
-            <MudText Color="Color.Primary" Typo="Typo.h4" Style="font-weight: bold">Bikare</MudText>
+    <MudPaper Class="pa-6" Width="80vh">
+        <MudStack Class="mb-4" Row="false" AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="2">
+            <MudAvatar Size="Size.Large">
+                <MudImage Src="logo.png" />
+            </MudAvatar>
+            <MudText Color="Color.Primary" Typo="Typo.h4" Style="font-weight: bold; font-family:cursive;">Just A Steward</MudText>
         </MudStack>
         <MudForm @ref="Form">
             <MudTextField T="string" Label="Username" @bind-Value="@Username" InputType="InputType.Text" Required="true" />
@@ -25,3 +27,4 @@
         </MudForm>
     </MudPaper>
 </div>
+

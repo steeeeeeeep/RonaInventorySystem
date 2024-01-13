@@ -46,21 +46,28 @@
         @if (IsSelectionActive)
         {
             <MudStack Row Class="d-flex align-items-center justify-content-center align-content-center">
-                <MudSelect @bind-Value="@SelectedStatus" OnAdornmentClick="Close" AdornmentIcon="@Icons.Material.Filled.Close" AdornmentColor="Color.Info">
+                <MudSelect @bind-Value="@SelectedStatus" 
+                    OnAdornmentClick="Close" 
+                    AdornmentIcon="@Icons.Material.Filled.Close" 
+                    AdornmentColor="Color.Info"
+                    Placeholder="Select Status"
+                >
                     <MudSelectItem Value="@("Pending")" />
                     <MudSelectItem Value="@("Delivered")" />
                     <MudSelectItem Value="@("Cancelled")" />
                 </MudSelect>
-                <MudButton OnClick="UpdateStatus" Variant="Variant.Outlined" Color="Color.Info">Add</MudButton>
+                <MudButton OnClick="UpdateStatus" Variant="Variant.Outlined" Color="Color.Info">Update</MudButton>
             </MudStack>
         }
 
         <MudSpacer/>
-
+        
         <MudStack Row="true" Class="p-2">
-            <MudItem xs="12">
-                <MudTextField @bind-Value="SearchString" Label="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable="true"></MudTextField>
-            </MudItem>
+            @if(!IsSelectionActive){
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="SearchString" Label="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable="true"></MudTextField>
+                </MudItem>
+            }
             <MudItem xs="12">
                 <MudTextField T="string" Class="mt-0" Label="Filter Approved Deduction" InputType="InputType.Date" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.FilterAlt" ValueChanged="(a) => FilterByDate(a)" />
             </MudItem>
