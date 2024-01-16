@@ -1,4 +1,6 @@
-﻿namespace BikeSparesInventorySystem.Pages;
+﻿using NPOI.SS.Formula.PTG;
+
+namespace BikeSparesInventorySystem.Pages;
 
 public partial class Miner
 {
@@ -23,16 +25,22 @@ public partial class Miner
     [CascadingParameter] private Action<string> SetAppBarTitle { get; set; }
     [Parameter] public Action ChangeParentState { get; set; }
     private MudForm form;
+    public int? _orders = 0;
 
     private string MinersName;
     private string CodeName;
     private decimal Price;
+    public DateTime ? CreatedAt;
     private bool IsSaving = false;
 
-    protected sealed override void OnInitialized()
+    private Dictionary<string, Miners> uniqueMiners = new Dictionary<string, Miners>();
+    private Dictionary<string, int> orderCounts = new Dictionary<string, int>();
+    private Dictionary<string, decimal> totalPrices = new Dictionary<string, decimal>();
+
+    protected sealed override async Task OnParametersSetAsync()
     {
         SetAppBarTitle.Invoke("Today's Miners");
-        Miners = MinersRepository.GetAll().Where(x => x.CreatedAt.ToString("MM/dd/yyyy") == DateTime.Now.ToString("MM/dd/yyyy") );
+        await LoadData();
 
         if (!AuthService.IsUserAdmin())
         {
@@ -40,7 +48,34 @@ public partial class Miner
         }
     }
 
-    private async Task Submit()
+    protected async Task LoadData()
+    {
+        uniqueMiners.Clear();
+        orderCounts.Clear();
+        totalPrices.Clear();
+
+        Miners = MinersRepository.GetAll();
+        foreach (var miner in Miners)
+        {
+            var name = miner.Name;
+
+            if (!uniqueMiners.ContainsKey(name))
+            {
+                uniqueMiners[name] = miner;
+                totalPrices[name] = miner.Price;
+                orderCounts[name] = 1;
+            }
+            else
+            {
+                orderCounts[name]++;
+                totalPrices[name] += miner.Price;
+            }
+        }
+    }
+
+    private List<Miners> UniqueMiners => uniqueMiners.Values.Where(x => x.CreatedAt == CreatedAt).ToList();
+
+private async Task Submit()
     {
         await form.Validate();
         if (form.IsValid)
@@ -50,7 +85,15 @@ public partial class Miner
                 Name = MinersName,
                 Code = CodeName,
                 Price = Price,
+                CreatedAt = CreatedAt
             };
+
+            //var CheckMiners = MinersRepository.GetAll().Where(x => x.Name == MinersName).ToList();
+
+            //if(CheckMiners.Any())
+            //{
+            //    _orders += 1;
+            //}
 
             MinersRepository.Add(Miner);
 
@@ -61,6 +104,7 @@ public partial class Miner
 
             IsSaving = true;
             await MinersRepository.FlushAsync();
+            await LoadData();
             IsSaving = false;
         }
 

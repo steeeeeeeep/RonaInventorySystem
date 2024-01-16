@@ -10,25 +10,27 @@
     <MudPaper Class="mud-theme-default my-2" Style="color:rgba(39,39,47,1)">
         <MudForm @ref="form">
             <MudGrid>
-                <MudItem xs="6">
+                <MudItem xs="4">
                     <MudTextField T="string" @bind-Value="MinersName" Variant="Variant.Outlined" Placeholder="Enter Miner's Name" Label="Miner" Validation="true" Required RequiredError="Name is required" />
-                    </MudItem>
-                    <MudItem xs="2">
-                        <MudTextField T="string" @bind-Value="CodeName" Variant="Variant.Outlined" Label="Code Name" Validation="true" />
-                    </MudItem>
-                    <MudItem xs="2">
-                        <MudNumericField  @bind-Value="Price" Variant="Variant.Outlined" Label="Price" AdornmentText="Php" Adornment="Adornment.Start" Validation="true" />
-                    </MudItem>
-                    <MudItem xs="2" Class="d-flex justify-content-center align-content-center align-items-center">
-                        <MudButton OnClick="Submit" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Add</MudButton>
-                    </MudItem>
-                </MudGrid>
-            </MudForm>
-     </MudPaper>
+                </MudItem>
+                <MudItem xs="2">
+                    <MudTextField T="string" @bind-Value="CodeName" Variant="Variant.Outlined" Label="Code Name" Validation="true" />
+                </MudItem>
+                <MudItem xs="2">
+                    <MudNumericField  @bind-Value="Price" Variant="Variant.Outlined" Label="Price" AdornmentText="Php" Adornment="Adornment.Start" Validation="true" />
+                </MudItem>
+                <MudItem xs="2">
+                    <MudDatePicker  @bind-Date="CreatedAt" Variant="Variant.Outlined" Label="Price" Validation="true" />
+                </MudItem>
+                <MudItem xs="2" Class="d-flex justify-content-center align-content-center align-items-center">
+                    <MudButton OnClick="Submit" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Add</MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </MudPaper>
 </MudContainer>
         
-<MudTable 
-    Items="@Miners"
+<MudTable Items="@UniqueMiners"
     FixedHeader="@Fixed_header" 
     FixedFooter="@Fixed_footer"
     Height="@(Fixed_header || Fixed_footer ? "calc(90vh - 64px - 64px - 64px)" : "")"
@@ -76,13 +78,15 @@
     <HeaderContent>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Name)">Name</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Code)">Code</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;">Orders</MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Price)">Price</MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd Style="white-space: nowrap;" DataLabel="Spare Name">@context.Name</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Category">@context.Code</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Price">P @context.Price</MudTd>
-    </RowTemplate>
+            <MudTd Style="white-space: nowrap;" DataLabel="Category">@context.Code</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Orders">@orderCounts[@context.Name]</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Price">P @totalPrices[context.Name]</MudTd>
+        </RowTemplate>
     <RowEditingTemplate>
         <MudTd DataLabel="Spare Name">
             <MudTextField @bind-Value="context.Name"/>
