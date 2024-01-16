@@ -2,19 +2,47 @@
 @layout MainLayout
 
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Miners> MinersRepository
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Category> CategoryRepository
 @inject BikeSparesInventorySystem.Data.Services.AuthService AuthService
 
 @inject ISnackbar Snackbar
 
+@if (Miners == null)
+{
+    <br/>
+    <div style="display:flex;justify-content:space-between; padding:10px 30px">
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="500px" Height="70px" />
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100px" Height="70px" />
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100px" Height="70px" />
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100px" Height="70px" />
+    </div>
+    <br/>
+    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="10vh" />
+    <br/>
+    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="50vh" />
+}
+else{
 <MudContainer>
     <MudPaper Class="mud-theme-default my-2" Style="color:rgba(39,39,47,1)">
         <MudForm @ref="form">
             <MudGrid>
                 <MudItem xs="4">
-                    <MudTextField T="string" @bind-Value="MinersName" Variant="Variant.Outlined" Placeholder="Enter Miner's Name" Label="Miner" Validation="true" Required RequiredError="Name is required" />
+                    <MudAutocomplete T="string" Label="Name" @bind-Value="MinersName" SearchFuncWithCancel="@Search" Variant="Variant.Outlined" ShowProgressIndicator="true" />
+                    @* <MudTextField T="string" @bind-Value="MinersName" Variant="Variant.Outlined" Placeholder="Enter Miner's Name" Label="Miner" Validation="true" Required RequiredError="Name is required" /> *@
                 </MudItem>
                 <MudItem xs="2">
-                    <MudTextField T="string" @bind-Value="CodeName" Variant="Variant.Outlined" Label="Code Name" Validation="true" />
+                    @* <MudTextField T="string" @bind-Value="CodeName" Variant="Variant.Outlined" Label="Code Name" Validation="true" /> *@
+                    <MudSelect T="string" @bind-Value="CodeName" Variant="Variant.Outlined"
+                                Label="Code" 
+                                Placeholder="Enter Code" 
+                                Validation="true" 
+                                AnchorOrigin="Origin.BottomCenter" 
+                                TransformOrigin="Origin.BottomCenter">
+                            @foreach(var category in Category)
+                            {
+                                <MudSelectItem Value="category.Name">@category.Name</MudSelectItem>
+                            }
+                        </MudSelect>
                 </MudItem>
                 <MudItem xs="2">
                     <MudNumericField  @bind-Value="Price" Variant="Variant.Outlined" Label="Price" AdornmentText="Php" Adornment="Adornment.Start" Validation="true" />
@@ -102,3 +130,4 @@
         <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, 200, 300,}" />
     </PagerContent>
 </MudTable>
+}

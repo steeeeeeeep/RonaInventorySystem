@@ -20,6 +20,7 @@ public partial class Miner
     private readonly TableEditTrigger EditTrigger = TableEditTrigger.EditButton;
     private string SearchString;
     private IEnumerable<Miners> Miners;
+    private IEnumerable<Category> Category;
     private readonly Dictionary<Guid, bool> OrderDescTrack = new();
 
     [CascadingParameter] private Action<string> SetAppBarTitle { get; set; }
@@ -41,6 +42,7 @@ public partial class Miner
     {
         SetAppBarTitle.Invoke("Today's Miners");
         await LoadData();
+        await LoadCategory();
 
         if (!AuthService.IsUserAdmin())
         {
@@ -50,6 +52,7 @@ public partial class Miner
 
     protected async Task LoadData()
     {
+        await Task.Delay(1000);
         uniqueMiners.Clear();
         orderCounts.Clear();
         totalPrices.Clear();
@@ -73,9 +76,20 @@ public partial class Miner
         }
     }
 
-    private List<Miners> UniqueMiners => uniqueMiners.Values.Where(x => x.CreatedAt == CreatedAt).ToList();
+    protected async Task LoadCategory()
+    {
+        await Task.Delay(500);
+        Category = CategoryRepository.GetAll();
+    }
 
-private async Task Submit()
+    private List<Miners> UniqueMiners => uniqueMiners.Values.Where(x => x.CreatedAt == CreatedAt).ToList();
+    private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
+    {
+        var result = uniqueMiners.Values.Where(x => x.CreatedAt == CreatedAt).Select(x=>x.Name).ToList();
+        return result;
+    }
+
+    private async Task Submit()
     {
         await form.Validate();
         if (form.IsValid)
