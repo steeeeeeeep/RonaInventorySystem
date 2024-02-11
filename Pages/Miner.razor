@@ -2,7 +2,7 @@
 @layout MainLayout
 
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Miners> MinersRepository
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Category> CategoryRepository
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Spare> ProductRepository
 @inject BikeSparesInventorySystem.Data.Services.AuthService AuthService
 
 @inject ISnackbar Snackbar
@@ -27,7 +27,7 @@ else{
         <MudForm @ref="form">
             <MudGrid>
                 <MudItem xs="4">
-                    <MudAutocomplete T="string" Label="Name" @bind-Value="MinersName" SearchFuncWithCancel="@Search" Variant="Variant.Outlined" ShowProgressIndicator="true" />
+                    <MudTextField T="string" Label="Name" @bind-Value="MinersName" OnInternalInputChanged="@HandleInternalInputChange" Variant="Variant.Outlined" ShowProgressIndicator="true" />
                     @* <MudTextField T="string" @bind-Value="MinersName" Variant="Variant.Outlined" Placeholder="Enter Miner's Name" Label="Miner" Validation="true" Required RequiredError="Name is required" /> *@
                 </MudItem>
                 <MudItem xs="2">
@@ -38,9 +38,9 @@ else{
                                 Validation="true" 
                                 AnchorOrigin="Origin.BottomCenter" 
                                 TransformOrigin="Origin.BottomCenter">
-                            @foreach(var category in Category)
+                            @foreach(var product in Products)
                             {
-                                <MudSelectItem Value="category.Name">@category.Name</MudSelectItem>
+                                <MudSelectItem Value="product.Name">@product.Name</MudSelectItem>
                             }
                         </MudSelect>
                 </MudItem>
@@ -48,7 +48,7 @@ else{
                     <MudNumericField  @bind-Value="Price" Variant="Variant.Outlined" Label="Price" AdornmentText="Php" Adornment="Adornment.Start" Validation="true" />
                 </MudItem>
                 <MudItem xs="2">
-                    <MudDatePicker  @bind-Date="CreatedAt" Variant="Variant.Outlined" Label="Price" Validation="true" />
+                    <MudDatePicker  @bind-Date="CreatedAt" Variant="Variant.Outlined" Label="Date" Validation="true" />
                 </MudItem>
                 <MudItem xs="2" Class="d-flex justify-content-center align-content-center align-items-center">
                     <MudButton OnClick="Submit" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Add</MudButton>
@@ -112,8 +112,8 @@ else{
     <RowTemplate>
         <MudTd Style="white-space: nowrap;" DataLabel="Spare Name">@context.Name</MudTd>
             <MudTd Style="white-space: nowrap;" DataLabel="Category">@context.Code</MudTd>
-            <MudTd Style="white-space: nowrap;" DataLabel="Orders">@orderCounts[@context.Name]</MudTd>
-            <MudTd Style="white-space: nowrap;" DataLabel="Price">P @totalPrices[context.Name]</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Orders">@orderCounts[@context.Name + @context.CreatedAt]</MudTd>
+                <MudTd Style="white-space: nowrap;" DataLabel="Price">P @totalPrices[context.Name + @context.CreatedAt]</MudTd>
         </RowTemplate>
     <RowEditingTemplate>
         <MudTd DataLabel="Spare Name">

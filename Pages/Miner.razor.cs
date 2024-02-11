@@ -20,12 +20,13 @@ public partial class Miner
     private readonly TableEditTrigger EditTrigger = TableEditTrigger.EditButton;
     private string SearchString;
     private IEnumerable<Miners> Miners;
-    private IEnumerable<Category> Category;
+    private IEnumerable<Spare> Products;
     private readonly Dictionary<Guid, bool> OrderDescTrack = new();
 
     [CascadingParameter] private Action<string> SetAppBarTitle { get; set; }
     [Parameter] public Action ChangeParentState { get; set; }
     private MudForm form;
+    private MudTextField<string> titleField;
     public int? _orders = 0;
 
     private string MinersName;
@@ -61,17 +62,18 @@ public partial class Miner
         foreach (var miner in Miners)
         {
             var name = miner.Name;
+            var date = miner.CreatedAt.Value.ToString();
 
-            if (!uniqueMiners.ContainsKey(name))
+            if (!uniqueMiners.ContainsKey(name + date))
             {
-                uniqueMiners[name] = miner;
-                totalPrices[name] = miner.Price;
-                orderCounts[name] = 1;
+                uniqueMiners[name + date] = miner;
+                totalPrices[name + date] = miner.Price;
+                orderCounts[name + date] = 1;
             }
             else
             {
-                orderCounts[name]++;
-                totalPrices[name] += miner.Price;
+                orderCounts[name + date]++;
+                totalPrices[name + date] += miner.Price;
             }
         }
     }
@@ -79,14 +81,37 @@ public partial class Miner
     protected async Task LoadCategory()
     {
         await Task.Delay(500);
-        Category = CategoryRepository.GetAll();
+        Products = ProductRepository.GetAll();
     }
 
     private List<Miners> UniqueMiners => uniqueMiners.Values.Where(x => x.CreatedAt == CreatedAt).ToList();
-    private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
+    //private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
+    //{
+    //    var result = uniqueMiners.Values.Where(x => x.CreatedAt == CreatedAt).Select(x=>x.Name).ToList();
+
+    //    if (!result.Contains(value))
+    //    {
+    //        return new List<string> { value };
+    //    }
+
+    //    return result;
+    //}
+    private async Task HandleInternalInputChange(ChangeEventArgs args)
     {
-        var result = uniqueMiners.Values.Where(x => x.CreatedAt == CreatedAt).Select(x=>x.Name).ToList();
-        return result;
+        // Extract the current input value
+        string inputValue = args?.Value?.ToString();
+
+        // Perform the search in uniqueMiners based on the input value
+        var result = MinersRepository.Get(x => x.Name, args.Value).Name;
+
+        // If no match is found, add the input value to the result
+        if (!result.Contains(inputValue))
+        {
+            result = inputValue;
+        }
+
+        // Invoke the event callback with the search result
+        await titleField.OnInternalInputChanged.InvokeAsync(new ChangeEventArgs { Value = result });
     }
 
     private async Task Submit()
@@ -117,8 +142,20 @@ public partial class Miner
             }
 
             IsSaving = true;
-            await MinersRepository.FlushAsync();
-            await LoadData();
+            var result = MinersRepository.FlushAsync();
+
+            if (result.IsCompletedSuccessfully)
+            {
+                var products = ProductRepository.Get(x => x.Name, Miner.Code);
+                if (products != null)
+                {
+                     products.AvailableQuantity--;
+                    await ProductRepository.FlushAsync();
+                }
+
+                await LoadData();
+            }
+
             IsSaving = false;
         }
 
