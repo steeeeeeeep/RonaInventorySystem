@@ -13,16 +13,17 @@
 	}
 	<MudNavGroup Icon="@Icons.Material.Filled.Inventory" Title="Inventory" Class="overflow-hidden">
 			<MudNavLink Href="@Inventory.Route">Products</MudNavLink>
-			<MudNavLink Href="@Categories.Route">Product Category</MudNavLink>
+			@* <MudNavLink Href="@Categories.Route">Product Category</MudNavLink> *@
 	</MudNavGroup>
 	<MudNavGroup Icon="@Icons.Material.Filled.EventAvailable" Title="Sales" Class="overflow-hidden">
 		<MudNavLink Href="@Miner.Route">Today's Order</MudNavLink>
 		<MudNavLink Href="@Order.Route">Manage Orders</MudNavLink>
 		<MudNavLink Href="@GetIncomeSummary.Route">Income Summary</MudNavLink>
 	</MudNavGroup>
-	<MudNavGroup Icon="@Icons.Material.Filled.Payments">
+	<MudNavGroup Icon="@Icons.Material.Filled.Payments" Title="Expenses" Class="overflow-hidden">
 		<MudNavLink Href="@Purchase.Route">Purchases</MudNavLink>
 		<MudNavLink Href="@GetExpenseFixedCost.Route">Misc</MudNavLink>
+		<MudNavLink Href="@GetContributions.Route">Contributions</MudNavLink>
 	</MudNavGroup>
 	<MudDivider DividerType="DividerType.FullWidth" Light="true"/>
 	<MudNavLink Href="@GetInvistors.Route" Icon="@Icons.Material.Filled.PersonAdd">Invistors</MudNavLink>
