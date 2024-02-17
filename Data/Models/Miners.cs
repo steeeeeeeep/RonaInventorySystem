@@ -8,8 +8,8 @@ public class Miners : IModel, ICloneable
     public decimal Price { get; set; }
     public string Status { get; set; }
     public Guid ActedBy { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime DateUpdated { get; set; } = DateTime.Now;
+    public DateTime? CreatedAt { get; set; }
+    public DateTime DateUpdated { get; set; }
 
     public object Clone()
     {
