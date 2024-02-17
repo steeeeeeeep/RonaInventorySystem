@@ -15,6 +15,8 @@ internal static class RepositoryInjection
             .AddSingleton<Repository<Wages>, Repository<Wages>>()
             .AddSingleton<Repository<Utilities>, Repository<Utilities>>()
             .AddSingleton<Repository<Expenses>, Repository<Expenses>>()
-            .AddSingleton<Repository<Invistor>, Repository<Invistor>>();
+            .AddSingleton<Repository<Invistor>, Repository<Invistor>>()
+            .AddSingleton<Repository<Contributions>, Repository<Contributions>>()
+            .AddSingleton<Repository<MonthlySales>, Repository<MonthlySales>>();
     }
 }

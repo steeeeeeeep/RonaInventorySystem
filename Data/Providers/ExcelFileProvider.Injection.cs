@@ -15,6 +15,8 @@ internal static class ExcelFileProviderInjection
             .AddSingleton<FileProvider<Wages>, ExcelFileProvider<Wages>>()
             .AddSingleton<FileProvider<Utilities>, ExcelFileProvider<Utilities>>()
             .AddSingleton<FileProvider<Expenses>, ExcelFileProvider<Expenses>>()
-            .AddSingleton<FileProvider<Invistor>, ExcelFileProvider<Invistor>>();
+            .AddSingleton<FileProvider<Invistor>, ExcelFileProvider<Invistor>>()
+            .AddSingleton<FileProvider<Contributions>, ExcelFileProvider<Contributions>>()
+            .AddSingleton<FileProvider<MonthlySales>, ExcelFileProvider<MonthlySales>>();
     }
 }

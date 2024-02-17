@@ -15,6 +15,8 @@ internal static class CSVFileProviderInjection
             .AddSingleton<FileProvider<Wages>, CsvFileProvider<Wages>>()
             .AddSingleton<FileProvider<Utilities>, CsvFileProvider<Utilities>>()
             .AddSingleton<FileProvider<Expenses>, CsvFileProvider<Expenses>>()
-            .AddSingleton<FileProvider<Invistor>, CsvFileProvider<Invistor>>();
+            .AddSingleton<FileProvider<Invistor>, CsvFileProvider<Invistor>>()
+            .AddSingleton<FileProvider<Contributions>, CsvFileProvider<Contributions>>()
+            .AddSingleton<FileProvider<MonthlySales>, CsvFileProvider<MonthlySales>>();
     }
 }
