@@ -1,1 +1,99 @@
-﻿
+﻿@layout MainLayout
+
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Sales> SalesRepository;
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Contributions> ContributionRepository;
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<MonthlySales> MonthlySalesRepository;
+@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
+
+<MudTable Items="@_MonthlySales"
+          FixedHeader="@Fixed_header"
+          FixedFooter="@Fixed_footer"
+          Height="@(Fixed_header || Fixed_footer ? "calc(100vh - 64px - 64px - 64px)" : "")"
+          Dense="@Dense"
+          Hover="@Hover"
+          ReadOnly="@ReadOnly"
+          Filter="new Func<MonthlySales,bool>(FilterFunc)"
+          HorizontalScrollbar="true"
+          SortLabel="Sort By"
+          CommitEditTooltip="Commit Edit"
+          RowsPerPage="25"
+          IsEditRowSwitchingBlocked="@BlockSwitch"
+          ApplyButtonPosition="@ApplyButtonPosition"
+          EditButtonPosition="@EditButtonPosition"
+          EditTrigger="TableEditTrigger.EditButton">
+
+        <ToolBarContent>
+            @if (AuthService.IsUserAdmin())
+            {
+                <MudStack Row="true">
+                    <MudItem xs="6" md="12">
+                        <ImportButton T="MonthlySales" ChangeParentState="StateHasChanged" />
+                    </MudItem>
+                    <MudItem xs="6" md="12">
+                    <ExportButton T="MonthlySales" />
+                    </MudItem>
+                    <MudItem xs="6" md="12">
+                        <MudButton StartIcon="@Icons.Material.Filled.Sync" Color="Color.Success" Variant="Variant.Outlined" OnClick="SyncSales">Sync</MudButton>
+                    </MudItem>
+                </MudStack>
+            }
+            <MudSpacer />
+            <MudStack Row="true">
+                <MudTextField @bind-Value="SearchString" Label="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable="true"></MudTextField>
+                <MudTextField T="string" Class="mt-0" Label="Filter " InputType="InputType.Month" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.FilterAlt" ValueChanged="(a) => FilterByMonth(a)" />
+            </MudStack>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.DailyDate)">Date</MudTableSortLabel></MudTh>
+            <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.GrossSale)">Gross Sales</MudTableSortLabel></MudTh>
+            <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Purchases)">Purchases</MudTableSortLabel></MudTh>
+            <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Expenses)">Misc</MudTableSortLabel></MudTh>
+            <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.DailyNetIncome)">Net Sales</MudTableSortLabel></MudTh>
+            <MudTh Style="white-space: nowrap;">
+                <div class="d-flex flex-column justify-content-center">
+                    <MudText Typo="Typo.body1" Class="p-0 m-0">Tithes</MudText>
+                    <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Tithes + "%" : "%")</MudText>
+                </div>
+            </MudTh>
+            <MudTh Style="white-space: nowrap;">
+                <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Charity)">
+                    <div class="d-flex flex-column justify-content-center">
+                        <MudText Typo="Typo.body1" Class="p-0 m-0">Charity</MudText>
+                        <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Charity + "%" : "%")</MudText>
+                    </div>
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh Style="white-space: nowrap;">
+                <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Car)">
+                    <div class="d-flex flex-column justify-content-center">
+                        <MudText Typo="Typo.body1" Class="p-0 m-0">Car</MudText>
+                        <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.CarExpense + "%" : "%")</MudText>
+                    </div>
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh Style="white-space: nowrap;">
+                <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.OtherContribution)">
+                    <div class="d-flex flex-column justify-content-center">
+                        <MudText Typo="Typo.body1" Class="p-0 m-0">Others</MudText>
+                        <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Others + "%" : "%")</MudText>
+                    </div>
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Profit)">Profit</MudTableSortLabel></MudTh>
+            <MudTh Style="white-space: nowrap;"></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+        <MudTd Style="white-space: nowrap;" DataLabel="Miners Date">@(new DateTime(context.Year, context.Month, 1).ToString("MMM yyyy"))</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Gross Sale">@context.GrossSale</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Purchases">@context.Purchases</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Expenses">@context.Expenses</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Net Sale">@context.MonthlyNetIncome</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Thithes">@context.Tithes</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Charity">@context.Charity</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Car">@context.Car</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Car">@context.OtherContribution</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Profit">@context.Profit</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Action" />
+        </RowTemplate>
+
+</MudTable>
