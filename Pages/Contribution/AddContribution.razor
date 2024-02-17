@@ -1,0 +1,50 @@
+﻿@inject ISnackbar Snackbar
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Contributions> ContributionRepository
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="Form">
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudNumericField @bind-Value="Tithes" Label="Tithes" Placeholder="ex. 100" HideSpinButtons="true" Adornment="Adornment.End" AdornmentText="%"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudNumericField @bind-Value="Charity" Label="Charity" Placeholder="ex. 100" HideSpinButtons="true" Adornment="Adornment.End" AdornmentText="%"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudNumericField @bind-Value="Car" Label="Car" Placeholder="ex. 100" HideSpinButtons="true" Adornment="Adornment.End" AdornmentText="%"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudNumericField @bind-Value="Others" Label="Others" Placeholder="ex. 100" HideSpinButtons="true" Adornment="Adornment.End" AdornmentText="%"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudSelect T="Status" @bind-Value="@Status" Label="Status">
+                        @foreach (Status stat in Enum.GetValues(typeof(Status)))
+                        {
+                            var displayName = stat.GetDisplayName();
+                            <MudSelectItem T="Status" Value="@stat">@displayName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton OnClick="SubmitContribution" 
+                    Color="@(!IsSaving ? Color.Primary : Color.Transparent)" 
+                    Variant="Variant.Filled" 
+                    StartIcon="@(IsSaving ? null : Icons.Material.Filled.Save)" 
+                    Disabled="@(Tithes == 0 || Charity == 0 || Car == 0 || Others == 0 ? true : false)">
+            @if (!IsSaving)
+            {
+                <MudText>Add</MudText>
+            }
+            else
+            {
+                <MudProgressCircular Color="Color.Info" Indeterminate="true" />
+                <MudText>Add</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
