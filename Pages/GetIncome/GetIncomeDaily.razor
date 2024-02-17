@@ -5,6 +5,7 @@
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Sales> SalesRepository
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Purchases> PurchaseRepository;
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Expenses> ExpensesRepository;
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Contributions> ContributionRepository;
 @inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
 
 @inject ISnackbar Snackbar
@@ -19,7 +20,7 @@
           ReadOnly="@ReadOnly"
           Filter="new Func<Sales,bool>(FilterFunc)"
           HorizontalScrollbar="true"
-@bind-SelectedItem="SelectedItem"
+          @bind-SelectedItem="SelectedItem"
           SortLabel="Sort By"
           CommitEditTooltip="Commit Edit"
           RowsPerPage="25"
@@ -57,18 +58,16 @@
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Expenses)">Misc</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.DailyNetIncome)">Net Sales</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;">
-            <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Tithes)">
-                <div class="d-flex flex-column justify-content-center">
-                    <MudText Typo="Typo.body1" Class="p-0 m-0">Tithes</MudText>
-                    <MudText Typo="Typo.overline" Class="p-0 m-0">-10%</MudText>
-                </div>
-            </MudTableSortLabel>
+            <div class="d-flex flex-column justify-content-center">
+                <MudText Typo="Typo.body1" Class="p-0 m-0">Tithes</MudText>
+                <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Tithes + "%" : "%" )</MudText>
+            </div>
         </MudTh>
         <MudTh Style="white-space: nowrap;">
             <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Charity)">
                 <div class="d-flex flex-column justify-content-center">
                     <MudText Typo="Typo.body1" Class="p-0 m-0">Charity</MudText>
-                    <MudText Typo="Typo.overline" Class="p-0 m-0">-5%</MudText>
+                    <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Charity + "%" : "%")</MudText>
                 </div>
             </MudTableSortLabel>
         </MudTh>
@@ -76,7 +75,15 @@
             <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Car)">
                 <div class="d-flex flex-column justify-content-center">
                     <MudText Typo="Typo.body1" Class="p-0 m-0">Car</MudText>
-                    <MudText Typo="Typo.overline" Class="p-0 m-0">-5%</MudText>
+                    <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.CarExpense + "%" : "%")</MudText>
+                </div>
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="white-space: nowrap;">
+            <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.OtherContribution)">
+                <div class="d-flex flex-column justify-content-center">
+                    <MudText Typo="Typo.body1" Class="p-0 m-0">Others</MudText>
+                    <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Others + "%" : "%")</MudText>
                 </div>
             </MudTableSortLabel>
         </MudTh>
@@ -92,6 +99,7 @@
         <MudTd Style="white-space: nowrap;" DataLabel="Thithes">@context.Tithes</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Charity">@context.Charity</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Car">@context.Car</MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="Car">@context.OtherContribution</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Profit">@context.Profit</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Action" />
     </RowTemplate>

@@ -21,6 +21,8 @@ public partial class GetIncomeDaily
     private IEnumerable<Purchases> _Purchases;
     private IEnumerable<Miners> _Miners;
     private IEnumerable<Expenses> _Expenses;
+    private IEnumerable<Contributions> _Contributions;
+    private Contributions _GetActiveContributions;
 
     [CascadingParameter]
     private Action<string> SetAppBarTitle { get; set; }
@@ -34,6 +36,7 @@ public partial class GetIncomeDaily
         _Sales = SalesRepository.GetAll().OrderBy(s => s.DailyDate);
         _Purchases = PurchaseRepository.GetAll();
         _Expenses = ExpensesRepository.GetAll();
+        _GetActiveContributions = ContributionRepository.Get(s => s.Status, Status.Active);
     }
     private void BackupItem(object element)
     {
@@ -44,10 +47,12 @@ public partial class GetIncomeDaily
     {
 
         _Miners = MinersRepository.GetAll();
+        _Contributions = ContributionRepository.GetAll();
+        var ActiveContribution = _Contributions.Where(s => s.Status == Status.Active).FirstOrDefault();
 
         var grossSalesPerDay = _Miners
             .Where(x => x.Status == "Delivered")
-            .GroupBy(x => x.DateUpdated.Date)  // Group by date without considering time
+            .GroupBy(x => x.CreatedAt.Value.Date)  // Group by date without considering time
             .Select(group => new
             {
                 Date = group.Key,
@@ -73,14 +78,24 @@ public partial class GetIncomeDaily
             else if (_Sales.Any(x => x.DailyDate == saleData.Date) && !_Sales.Any(x => x.Id == saleData.Id))
             {
                 var existing = SalesRepository.Get(x => x.DailyDate, saleData.Date);
-                if (existing != null)
+                if (existing != null && ActiveContribution != null)
                 {
                     existing.GrossSale = saleData.GrossSale;
                     existing.DailyNetIncome = existing.GrossSale - existing.Expenses - existing.Purchases;
-                    existing.Tithes = existing.DailyNetIncome * (decimal).10;
-                    existing.Car = existing.DailyNetIncome * (decimal).05;
-                    existing.Charity = existing.DailyNetIncome * (decimal).05;
-                    existing.Profit = existing.DailyNetIncome - existing.Tithes - existing.Car - existing.Charity;
+                    existing.Tithes = existing.DailyNetIncome * ((decimal)ActiveContribution.Tithes / 100);
+                    existing.Car = existing.DailyNetIncome * ((decimal)ActiveContribution.CarExpense / 100);
+                    existing.Charity = existing.DailyNetIncome * ((decimal)ActiveContribution.Charity / 100);
+                    existing.OtherContribution = existing.DailyNetIncome * ((decimal)ActiveContribution.Others / 100);
+                    existing.Profit = existing.DailyNetIncome - existing.Tithes - existing.Car - existing.Charity - existing.OtherContribution;
+                }
+                else
+                {
+                    existing.GrossSale = saleData.GrossSale;
+                    existing.DailyNetIncome = existing.GrossSale - existing.Expenses - existing.Purchases;
+                    existing.Tithes = 0;
+                    existing.Car = 0;
+                    existing.Charity = 0;
+                    existing.Profit = existing.DailyNetIncome - existing.Tithes - existing.Car - existing.Charity - existing.OtherContribution;
                 }
                 await SalesRepository.FlushAsync();
                 Snackbar.Add("Sales is up to date!", Severity.Info);
@@ -102,10 +117,13 @@ public partial class GetIncomeDaily
         var expenses = _Expenses.Where(x => x.Id == ExpenseId)
                     .Select(x => x.DirectCostId).FirstOrDefault();
 
+        var contributions = ContributionRepository.Get(s => s.Status, Status.Active);
+
         var netSale = grossSale - purchase - expenses;
-        var Tithes = (decimal).10 * netSale;
-        var Charity = (decimal).5 * netSale;
-        var Car = (decimal).5 * netSale;
+        var Tithes = ((decimal)contributions.Tithes / 100) * netSale;
+        var Charity = ((decimal)contributions.Charity / 100) * netSale;
+        var Car = ((decimal)contributions.CarExpense / 100) * netSale;
+        var OtherContribution = ((decimal)contributions.Others / 100) * netSale;
 
         var existingSales = SalesRepository.Get(x => x.Id, SelectedItem.Id);
 
@@ -113,11 +131,12 @@ public partial class GetIncomeDaily
         {
             existingSales.Purchases = purchase;
             existingSales.Expenses = expenses;
-            existingSales.Tithes = (decimal).10 * netSale;
-            existingSales.Charity = (decimal).05 * netSale;
-            existingSales.Car = (decimal).05 * netSale;
+            existingSales.Tithes = Tithes;
+            existingSales.Charity = Charity;
+            existingSales.Car = Car;
+            existingSales.OtherContribution = OtherContribution;
             existingSales.DailyNetIncome = netSale;
-            existingSales.Profit = netSale - Tithes - Charity - Car;
+            existingSales.Profit = netSale - Tithes - Charity - Car - OtherContribution;
         }
         await SalesRepository.FlushAsync();
     }
