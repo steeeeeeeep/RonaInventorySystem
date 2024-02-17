@@ -1,0 +1,62 @@
+﻿@inject BikeSparesInventorySystem.Data.Repositories.Repository<Miners> MinersRepository
+
+@inject ISnackbar Snackbar
+ 
+@if(Miners == null)
+{
+    <div class="d-flex justify-content-center w-100">
+        <MudProgressLinear Color="Color.Info" Size="Size.Medium" Indeterminate="true" />
+    </div>
+}
+else
+{
+    if (!Miners.Any())
+    {
+        <div class="d-flex justify-content-center w-100">
+            <h5 style="color:gray; text-align:center">No Content</h5>
+        </div>
+    }
+    else
+    {
+        <MudTable Items="@Miners"
+                  Dense="@Dense"
+                  Hover="@Hover"
+                  ReadOnly="@ReadOnly"
+                  HorizontalScrollbar="true"
+                  CanCancelEdit="@CanCancelEdit"
+                  @bind-SelectedItem="SelectedItem"
+                  SortLabel="Sort By"
+                  CommitEditTooltip="CommitEdit"
+                  RowsPerPage="25"
+                  OnCommitEditClick="@Update"
+                  RowEditPreview="BackupItem"
+                  RowEditCancel="ResetItemToOriginalValues"
+                  IsEditRowSwitchingBlocked="@BlockSwitch"
+                  ApplyButtonPosition="@ApplyButtonPosition"
+                  EditButtonPosition="@EditButtonPosition"
+                  EditTrigger="@EditTrigger">
+            <HeaderContent>
+                <MudTh>Name</MudTh>
+                <MudTh>Code</MudTh>
+                <MudTh>Price</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd Style="white-space: nowrap;" DataLabel="Spare Name">@context.Name</MudTd>
+                    <MudTd Style="white-space: nowrap;" DataLabel="Category">@context.Code</MudTd>
+                    <MudTd Style="white-space: nowrap;" DataLabel="Orders"></MudTd>
+                    <MudTd Style="white-space: nowrap;" DataLabel="Price">@context.Price</MudTd>
+            </RowTemplate>
+            <RowEditingTemplate>
+                <MudTd DataLabel="Spare Name">
+                    <MudTextField @bind-Value="context.Name" />
+                </MudTd>
+                <MudTd DataLabel="Category">
+                    <MudTextField @bind-Value="context.Code" />
+                </MudTd>
+                <MudTd DataLabel="Price">
+                    <MudTextField @bind-Value="context.Price" />
+                </MudTd>
+            </RowEditingTemplate>
+        </MudTable>
+    }
+}
