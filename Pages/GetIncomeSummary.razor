@@ -1,9 +1,5 @@
 ﻿@page "/getIncomeSummary"
 
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Miners> MinersRepository
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Sales> SalesRepository
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Purchases> PurchaseRepository;
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Expenses> ExpensesRepository;
 @inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
 
 @inject ISnackbar Snackbar
@@ -12,10 +8,7 @@
     <MudTabPanel Text="Daily Income" ID='"pn_one"'>
         <GetIncomeDaily/>
     </MudTabPanel>
-    <MudTabPanel Text="Weekly Income" ID='"pn_two"' Disabled>
-        <GetIncomeWeekly />
-    </MudTabPanel>
-    <MudTabPanel Text="Monthly Income" ID='"pn_three"' Disabled>
+    <MudTabPanel Text="Monthly Income" ID='"pn_three"'>
         <GetIncomeMonthly />
     </MudTabPanel>
 </MudTabs>
