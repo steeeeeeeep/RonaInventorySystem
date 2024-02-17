@@ -11,6 +11,7 @@ public class Sales : IModel, ICloneable
     public decimal MonthlyProfit { get; set; }
     public decimal Tithes { get; set; }
     public decimal Charity { get; set; }
+    public decimal OtherContribution { get; set; }
     public decimal Expenses { get; set; }
     public decimal Car { get; set; }
     public decimal Profit { get; set; }
