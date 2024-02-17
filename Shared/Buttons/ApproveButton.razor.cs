@@ -17,10 +17,10 @@ public partial class ApproveButton
         {
             errorMessage = "Action on weekends restricted!";
         }
-        if (currentTime.Hours is < 9 or > (12 + 4))
-        {
-            errorMessage = "Action outside 9AM to 4PM restricted!";
-        }
+        //if (currentTime.Hours is < 9 or > (12 + 4))
+        //{
+        //    errorMessage = "Action outside 9AM to 4PM restricted!";
+        //}
 
         if (errorMessage is not null)
         {
