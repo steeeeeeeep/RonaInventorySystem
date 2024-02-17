@@ -1,0 +1,84 @@
+﻿@page "/contributions"
+@layout MainLayout
+
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Contributions> ContributionRepository
+@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService
+
+@inject IDialogService DialogService;
+
+<MudPaper Elevation="0" >
+    <div class="d-flex justify-content-center pt-3">
+        @if (AuthService.IsUserAdmin())
+        {
+            <MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Label="Add Contribution" DisableElevation="true"  OnClick="AddContribution" />
+        }
+
+        <br/>
+        <br/>
+        @if (_Contributions == null)
+        {
+            <MudProgressLinear Color="Color.Info" Size="Size.Small" Indeterminate="true"/>
+        }
+        else
+        {
+            <MudTable Items="@_Contributions"
+                      FixedHeader="@Fixed_header"
+                      FixedFooter="@Fixed_footer"
+                      Height="@(Fixed_header || Fixed_footer ? "calc(100vh - 64px - 64px - 64px)" : "")"
+                      Dense="@Dense"
+                      Hover="@Hover"
+                      ReadOnly="@ReadOnly"
+                      SortLabel="Sort By"
+                      OnCommitEditClick="@Update"
+                      IsEditRowSwitchingBlocked="@BlockSwitch"
+                      ApplyButtonPosition="@ApplyButtonPosition"
+                      EditButtonPosition="@EditButtonPosition"
+                      EditTrigger="TableEditTrigger.EditButton">
+                <HeaderContent>
+                    <MudTh>Tithes</MudTh>
+                    <MudTh>Charity</MudTh>
+                    <MudTh>Car</MudTh>
+                    <MudTh>Others</MudTh>
+                    <MudTh>Status</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Tithes">@context.Tithes</MudTd>
+                    <MudTd DataLabel="Charity">@context.Charity</MudTd>
+                    <MudTd DataLabel="Car">@context.CarExpense</MudTd>
+                    <MudTd DataLabel="Others">@context.Others</MudTd>
+                    <MudTd DataLabel="Status">
+                        <MudChip Color="@GetChipVariant(context.Status)">@context.Status</MudChip>
+                    </MudTd>
+                    <MudTd><MudIconButton OnClick="() => Remove(context.Id)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error"/></MudTd>
+                </RowTemplate>
+                <RowEditingTemplate>
+                    <MudTd>
+                        <MudTextField @bind-Value="@context.Tithes" />
+                    </MudTd>
+                    <MudTd>
+                        <MudTextField @bind-Value="@context.Charity" />
+                    </MudTd>
+                    <MudTd>
+                        <MudTextField @bind-Value="@context.CarExpense" />
+                    </MudTd>
+                    <MudTd>
+                        <MudTextField @bind-Value="@context.Others" />
+                    </MudTd>
+                    <MudTd>
+                        <MudSelect T="Status" @bind-Value="@context.Status" Label="Status" FullWidth="true" Style="width:100px">
+                            @foreach(Status stat in Enum.GetValues(typeof(Status)))
+                            {
+                                var displayName = stat.GetDisplayName();
+                                <MudSelectItem T="Status" Value="@stat">@displayName</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudTd>
+                </RowEditingTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[] {10, 25, 50, 100}" />
+                </PagerContent>
+            </MudTable>
+        }
+    </div>
+</MudPaper>
