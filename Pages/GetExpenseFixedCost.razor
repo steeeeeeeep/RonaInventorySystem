@@ -22,10 +22,10 @@
 
         @if (AuthService.IsUserAdmin())
         {
+            <MudFab class="me-4" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Label="Add Purchase" DisableElevation="true" OnClick="@ShowAddExpenses" />
             <MudStack Row="true">
                 <ImportButton T="Expenses" ChangeParentState="StateHasChanged" />
                 <ExportButton T="Expenses" />
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@ShowAddExpenses">Add Expenses</MudButton>
             </MudStack>
         }
         <MudSpacer />
