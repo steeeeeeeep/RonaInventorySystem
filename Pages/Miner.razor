@@ -58,76 +58,34 @@ else{
     </MudPaper>
 </MudContainer>
         
-<MudTable Items="@UniqueMiners"
+<MudDataGrid T="@Miners" Items="@UniqueMiners"
     FixedHeader="@Fixed_header" 
     FixedFooter="@Fixed_footer"
     Height="@(Fixed_header || Fixed_footer ? "calc(90vh - 64px - 64px - 64px)" : "")"
     Dense="@Dense"
     Hover="@Hover"
-    ReadOnly="@ReadOnly"
-    HorizontalScrollbar="true"
-    CanCancelEdit="@CanCancelEdit"
-    Filter="new Func<Miners,bool>(FilterFunc)"
-        @bind-SelectedItem="SelectedItem" 
-        SortLabel="Sort By" 
-        CommitEditTooltip="Commit Edit"
-        RowsPerPage="25"
-        OnCommitEditClick="@Update"
-        RowEditPreview="BackupItem"
-        RowEditCancel="ResetItemToOriginalValues"
-        IsEditRowSwitchingBlocked="@BlockSwitch"
-        ApplyButtonPosition="@ApplyButtonPosition"
-        EditButtonPosition="@EditButtonPosition"
-        EditTrigger="@EditTrigger">
-    <ToolBarContent>
-        
-        @if (AuthService.IsUserAdmin())
-        {
-            <MudStack Row="true">
-                <ImportButton T="Miners" ChangeParentState="StateHasChanged" />
-                <ExportButton T="Miners" />
-            </MudStack>
-        }
-        <MudSpacer />
+    ReadOnly="@ReadOnly">
+    
+    <Columns>
+        <HierarchyColumn/>
+        <PropertyColumn Title="Name" Property="x => x.Name" />
+        <TemplateColumn Title="Orders">
+            <CellTemplate>
+                <MudText>@orderCounts[@context.Item.Name + @context.Item.CreatedAt]</MudText>
+            </CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Total Price">
+            <CellTemplate>
+                <MudText>@totalPrices[@context.Item.Name + @context.Item.CreatedAt]</MudText>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <ChildRowContent>
+        <MinersDetail MinersDetails="@context.Item" />
+    </ChildRowContent>
 
-        <MudStack Row="true">
-            <MudTextField @bind-Value="SearchString" Label="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable="true"></MudTextField>
-        </MudStack>
-    </ToolBarContent>
-    <ColGroup>
-        <col />
-        <col />
-        <col width="400" />
-        <col />
-        <col />
-        <col />
-        <col />
-    </ColGroup>
-    <HeaderContent>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Name)">Name</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Code)">Code</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;">Orders</MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Price)">Price</MudTableSortLabel></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd Style="white-space: nowrap;" DataLabel="Spare Name">@context.Name</MudTd>
-            <MudTd Style="white-space: nowrap;" DataLabel="Category">@context.Code</MudTd>
-            <MudTd Style="white-space: nowrap;" DataLabel="Orders">@orderCounts[@context.Name + @context.CreatedAt]</MudTd>
-                <MudTd Style="white-space: nowrap;" DataLabel="Price">P @totalPrices[context.Name + @context.CreatedAt]</MudTd>
-        </RowTemplate>
-    <RowEditingTemplate>
-        <MudTd DataLabel="Spare Name">
-            <MudTextField @bind-Value="context.Name"/>
-        </MudTd>
-        <MudTd DataLabel="Category">
-            <MudTextField @bind-Value="context.Code"/>
-        </MudTd>
-        <MudTd DataLabel="Price">
-            <MudTextField @bind-Value="context.Price"/>
-        </MudTd>
-    </RowEditingTemplate>
     <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, 200, 300,}" />
+        <MudDataGridPager T="@Miners" PageSizeOptions="new int[] { 10, 25, 50, 100, 200, 300,}" />
     </PagerContent>
-</MudTable>
+</MudDataGrid>
 }
