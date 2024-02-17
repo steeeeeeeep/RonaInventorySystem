@@ -1,10 +1,12 @@
-﻿namespace BikeSparesInventorySystem.Pages;
+﻿using PSC.Blazor.Components.Chartjs.Models.Line;
+
+namespace BikeSparesInventorySystem.Pages;
 
 public partial class Dashboard
 {
     public const string Route = "/dashboard";
 
-    private BarChartConfig Config;
+    private LineChartConfig Config;
 
     [CascadingParameter]
     private Action<string> SetAppBarTitle { get; set; }
@@ -18,7 +20,7 @@ public partial class Dashboard
             Size = 16
         };
 
-        Config = new BarChartConfig()
+        Config = new LineChartConfig()
         {
             Options = new Options()
             {
@@ -97,11 +99,13 @@ public partial class Dashboard
             }
         };
 
-        BarDataset ApprovedDeductionQuantitySet = new()
+        LineDataset Sales = new()
         {
             Data = new List<decimal?>(),
-            BackgroundColor = new() { "rgb(0, 163, 68)" },
-            Label = "Approved Deduction (Taken Out)",
+            Fill = true,
+            FillColor = "#525CEB, #ADD8E6",
+            BackgroundColor = "#ADD8E6",
+            Label = "Sales",
         };
 
         BarDataset AvailableQuantitySet = new()
@@ -126,31 +130,35 @@ public partial class Dashboard
         };
 
 
-        foreach (IGrouping<Guid, Data.Models.ActivityLog> group in ActivityLogRepository.GetAll().GroupBy(x => x.SpareID).ToList())
+        foreach (IGrouping<Guid, Data.Models.Sales> group in SalesRepository.GetAll().GroupBy(x => x.Id).ToList())
         {
-            Data.Models.Spare spare = SpareRepository.Get(x => x.Id, group.Key);
-            if (spare is null)
+
+            Data.Models.Sales sales = SalesRepository.Get(x => x.Id, group.Key);
+            if (sales is null)
             {
                 continue;
             }
 
-            List<Data.Models.ActivityLog> deductedStock = group.Where(x => x.Action == Data.Enums.StockAction.Deduct).ToList();
-            int approved = deductedStock.Where(x => x.ApprovalStatus == Data.Enums.ApprovalStatus.Approve).Sum(x => x.Quantity);
-            int pending = deductedStock.Where(x => x.ApprovalStatus == Data.Enums.ApprovalStatus.Pending).Sum(x => x.Quantity);
-            int disapproved = deductedStock.Where(x => x.ApprovalStatus == Data.Enums.ApprovalStatus.Disapprove).Sum(x => x.Quantity);
+            Config.Data.Labels.Add(sales.DailyDate.ToString("M/yyyy"));
 
-            Config.Data.Labels.Add(spare.Name);
+            Sales.Data.Add(sales.Profit);
 
-            ApprovedDeductionQuantitySet.Data.Add(approved);
-            PendingDeductionQuantitySet.Data.Add(pending);
-            DisapprovedDeductionQuantitySet.Data.Add(disapproved);
 
-            AvailableQuantitySet.Data.Add(spare.AvailableQuantity);
+            //List<Data.Models.ActivityLog> deductedStock = group.Where(x => x.Action == Data.Enums.StockAction.Deduct).ToList();
+            //int approved = deductedStock.Where(x => x.ApprovalStatus == Data.Enums.ApprovalStatus.Approve).Sum(x => x.Quantity);
+            //int pending = deductedStock.Where(x => x.ApprovalStatus == Data.Enums.ApprovalStatus.Pending).Sum(x => x.Quantity);
+            //int disapproved = deductedStock.Where(x => x.ApprovalStatus == Data.Enums.ApprovalStatus.Disapprove).Sum(x => x.Quantity);
+
+            //Config.Data.Labels.Add(spare.Name);
+
+            //ApprovedDeductionQuantitySet.Data.Add(approved);
+            //PendingDeductionQuantitySet.Data.Add(pending);
+            //DisapprovedDeductionQuantitySet.Data.Add(disapproved);
+
+            //AvailableQuantitySet.Data.Add(spare.AvailableQuantity);
         }
 
-        Config.Data.Datasets.Add(ApprovedDeductionQuantitySet);
-        Config.Data.Datasets.Add(PendingDeductionQuantitySet);
-        Config.Data.Datasets.Add(AvailableQuantitySet);
-        Config.Data.Datasets.Add(DisapprovedDeductionQuantitySet);
+        Config.Data.Datasets.Add(Sales);
+       
     }
 }
