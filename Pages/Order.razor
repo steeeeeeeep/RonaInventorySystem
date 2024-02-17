@@ -3,6 +3,7 @@
 
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Miners> MinersRepository
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Sales> SalesRepository
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Spare> ProductRepository
 @inject BikeSparesInventorySystem.Data.Services.AuthService AuthService
 
 @inject ISnackbar Snackbar
@@ -114,7 +115,7 @@
                 </MudTooltip>
             }
             </MudTd>
-            <MudTd Style="white-space: nowrap;" DataLabel="CreatedAt">@context.CreatedAt.ToString("MMM dd, yyyy")</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="CreatedAt">@context.CreatedAt.GetValueOrDefault().ToString("MMM dd, yyyy")</MudTd>
     </RowTemplate>
     <RowEditingTemplate>
         <MudTd DataLabel="Spare Name">

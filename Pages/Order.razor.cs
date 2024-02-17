@@ -45,6 +45,11 @@ public partial class Order
             foreach(var item in SelectedItems)
             {
                 item.Status = SelectedStatus;
+
+                //if(SelectedStatus == "Cancelled")
+                //{
+                //    ProductRepository.ge
+                //}
             }
 
         }
@@ -105,7 +110,7 @@ public partial class Order
         int month = int.Parse(date[1]);
         int day = int.Parse(date[2]);
 
-        Miners = miners.Where(d => d.CreatedAt.Year == year && d.CreatedAt.Month == month && d.CreatedAt.Day == day).ToList();
+        Miners = miners.Where(d => d.CreatedAt.GetValueOrDefault().Year == year && d.CreatedAt.GetValueOrDefault().Month == month && d.CreatedAt.GetValueOrDefault().Day == day).ToList();
     }
 
 }
