@@ -14,6 +14,8 @@ public class Spare : IModel, ICloneable
 
     public int AvailableQuantity { get; set; }
 
+    public int ActualQuantity { get; set; }
+
     public object Clone()
     {
         return new Spare
@@ -23,7 +25,8 @@ public class Spare : IModel, ICloneable
             Description = Description,
             CategoryId = CategoryId,
             Price = Price,
-            AvailableQuantity = AvailableQuantity
+            AvailableQuantity = AvailableQuantity,
+            ActualQuantity = ActualQuantity,
         };
     }
 
