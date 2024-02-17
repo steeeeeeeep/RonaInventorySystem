@@ -49,7 +49,7 @@
 
 		<!-- Splash Screen -->
 		<!--<MauiSplashScreen Include="Resources\Images\dotnet_bot.svg" Color="#512BD4" BaseSize="128,128" />-->
-		<MauiSplashScreen Include="Resources\AppIcon\jas.svg" />
+		<!--<MauiSplashScreen Include="Resources\AppIcon\jas.svg" />-->
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -68,6 +68,10 @@
 		<PackageReference Include="ExcelMapper" Version="5.2.542" />
 		<PackageReference Include="MudBlazor" Version="6.11.0" />
 		<PackageReference Include="PSC.Blazor.Components.Chartjs" Version="6.0.41" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<MauiSplashScreen Include="Resources\Splash\jas.svg" />
 	</ItemGroup>
 
 </Project>
