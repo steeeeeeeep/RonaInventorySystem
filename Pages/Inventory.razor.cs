@@ -108,26 +108,26 @@ public partial class Inventory
 
     private async Task AddDialog()
     {
-        if(Categories.Any())
-        {
+        //if(Categories.Any())
+        //{
             DialogParameters parameters = new()
             {
                 { "ChangeParentState", new Action(StateHasChanged) }
             };
             await DialogService.ShowAsync<AddSpareDialog>("Add Product", parameters);
-        }
-        else
-        {
-            Snackbar.Add("Create product category first! Click here!", Severity.Error, (option) =>
-            {
-                option.CloseAfterNavigation = true;
-                option.Onclick = onclick =>
-                {
-                    ShowCategoryPage();
-                    return Task.CompletedTask;
-                };
-            });
-        }
+        //}
+        //else
+        //{
+        //    Snackbar.Add("Create product category first! Click here!", Severity.Error, (option) =>
+        //    {
+        //        option.CloseAfterNavigation = true;
+        //        option.Onclick = onclick =>
+        //        {
+        //            ShowCategoryPage();
+        //            return Task.CompletedTask;
+        //        };
+        //    });
+        //}
     }
 
     private async Task ActOnStock(Spare spare, StockAction action)

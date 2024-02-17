@@ -59,15 +59,13 @@
     </ColGroup>
     <HeaderContent>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.Name)">Name</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.CategoryId)">Category</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.Price)">Price</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.AvailableQuantity)">Available Quantity</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;">Last Taken Out</MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.ActualQuantity)">Actual Quantity</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;" />
     </HeaderContent>
     <RowTemplate>
         <MudTd Style="white-space: nowrap;" DataLabel="Spare Name">@context.Name</MudTd> 
-        <MudTd Style="white-space: nowrap;" DataLabel="Category">@GetCategoryNameById(context.CategoryId)</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Price">P @context.Price</MudTd>
         <MudTd DataLabel="Available Quantity">
             @if (@context.AvailableQuantity == 0)
@@ -75,10 +73,12 @@
                 <MudText Color="Color.Secondary">Stockout</MudText>
             } else
             {
-                @context.AvailableQuantity
+                <MudText Color="Color.Info">@context.AvailableQuantity</MudText>
             }
         </MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Last Taken Out">@GetLastTakenOut(context.Id)</MudTd>
+        <MudTd DataLabel="Actual Quantity">
+            <MudText Color="Color.Secondary">@context.ActualQuantity</MudText>
+        </MudTd>
         <MudTd DataLabel="Action">
             <MudStack Row="true">
                 @if (AuthService.IsUserAdmin())
@@ -111,14 +111,11 @@
         <MudTd DataLabel="Spare Name">
             <MudTextField @bind-Value="@context.Name" />
         </MudTd>
-        <MudTd DataLabel="Company">
-            <MudTextField @bind-Value="@context.CategoryId" Required/>
-        </MudTd>
         <MudTd DataLabel="Price">
             <MudTextField @bind-Value="@context.Price" Required />
         </MudTd>
         <MudTd DataLabel="Available Quantity">
-            <MudTextField @bind-Value="@context.AvailableQuantity" Required />
+             <MudField>@context.AvailableQuantity</MudField>
         </MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Last Taken Out">@GetLastTakenOut(context.Id)</MudTd>
     </RowEditingTemplate>
