@@ -16,6 +16,8 @@ public partial class Index
         await _expensesRepository.LoadAsync();
         await _salesRepository.LoadAsync();
         await _invistorRepository.LoadAsync();
+        await _contributionRepository.LoadAsync();
+        await _monthlySalesRepository.LoadAsync();
         try
         {
             await _authService.CheckSession();
