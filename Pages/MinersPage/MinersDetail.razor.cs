@@ -50,7 +50,9 @@ public partial class MinersDetail
 
         // Invoke the event callback with the search result
         //await titleField.OnInternalInputChanged.InvokeAsync(new ChangeEventArgs { Value = result });
-    } protected async Task Update()
+    } 
+    
+    protected async Task Update()
     {
         await MinersRepository.FlushAsync();
         Snackbar.Add("Successfuly Updated!", Severity.Success);

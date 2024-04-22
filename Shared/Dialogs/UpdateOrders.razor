@@ -1,0 +1,47 @@
+﻿@inject BikeSparesInventorySystem.Data.Services.AuthService AuthService
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Miners> OrdersRepository
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudField Label="Name">@Orders.Name</MudField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudField Label="Code">@Orders.Code</MudField>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="Orders.Price" Label="Amount" Placeholder="Amount" /> 
+                </MudItem>
+                <MudItem xs="6">
+                    <MudSelect @bind-Value="Orders.Status">
+                        <MudSelectItem Value="@("Pending")" />
+                        <MudSelectItem Value="@("Delivered")" />
+                        <MudSelectItem Value="@("Cancelled")" />
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudField Label="Amount">@Orders.Price</MudField>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Disabled="@IsSaving">Cancel</MudButton>
+        <MudButton OnClick="Update" 
+            EndIcon="@(IsSaving ? null : Icons.Material.Filled.Save)"
+            Color="Color.Success"
+            Disabled="@IsSaving">
+                @if (!IsSaving)
+                {
+                    <p>Save Changes</p>
+                }
+                else
+                {
+                    <p>Saving</p>
+                    <MudProgressCircular Size="Size.Small" Indeterminate=true />
+                }
+        </MudButton>
+    </DialogActions>
+</MudDialog>

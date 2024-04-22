@@ -7,6 +7,7 @@ public class Miners : IModel, ICloneable
     public string Code { get; set; }
     public decimal Price { get; set; }
     public string Status { get; set; }
+    public Guid ProductId { get; set; }
     public Guid ActedBy { get; set; }
     public DateTime? CreatedAt { get; set; }
     public DateTime DateUpdated { get; set; }
@@ -19,6 +20,7 @@ public class Miners : IModel, ICloneable
             Name = Name,
             Code = Code,
             Price = Price,
+            ProductId = ProductId,
             ActedBy = ActedBy,
             CreatedAt = CreatedAt,
             DateUpdated = DateUpdated

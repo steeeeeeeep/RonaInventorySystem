@@ -1,10 +1,7 @@
-﻿using BikeSparesInventorySystem.Shared.Dto;
-
-namespace BikeSparesInventorySystem.Pages.Contribution;
+﻿namespace BikeSparesInventorySystem.Pages.Contribution;
 
 public partial class AddContribution
 {
-    protected AddContributionDto _Contribution;
 
     [CascadingParameter]
     public MudDialogInstance MudDialog { get; set; } = default!;

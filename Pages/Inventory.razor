@@ -59,14 +59,14 @@
     </ColGroup>
     <HeaderContent>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.Name)">Name</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.Price)">Price</MudTableSortLabel></MudTh>
+        @* <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.Price)">Price</MudTableSortLabel></MudTh> *@
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.AvailableQuantity)">Available Quantity</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Spare, object>(x=>x.ActualQuantity)">Actual Quantity</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;" />
     </HeaderContent>
     <RowTemplate>
         <MudTd Style="white-space: nowrap;" DataLabel="Spare Name">@context.Name</MudTd> 
-        <MudTd Style="white-space: nowrap;" DataLabel="Price">P @context.Price</MudTd>
+        @* <MudTd Style="white-space: nowrap;" DataLabel="Price">P @context.Price</MudTd> *@
         <MudTd DataLabel="Available Quantity">
             @if (@context.AvailableQuantity == 0)
             {
@@ -111,11 +111,14 @@
         <MudTd DataLabel="Spare Name">
             <MudTextField @bind-Value="@context.Name" />
         </MudTd>
-        <MudTd DataLabel="Price">
+      @*   <MudTd DataLabel="Price">
             <MudTextField @bind-Value="@context.Price" Required />
+        </MudTd> *@
+        <MudTd DataLabel="Actual Quantity">
+            <MudTextField @bind-Value="@context.AvailableQuantity" Required />
         </MudTd>
         <MudTd DataLabel="Available Quantity">
-             <MudField>@context.AvailableQuantity</MudField>
+             <MudTextField @bind-Value="@context.ActualQuantity">@context.ActualQuantity</MudTextField>
         </MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Last Taken Out">@GetLastTakenOut(context.Id)</MudTd>
     </RowEditingTemplate>

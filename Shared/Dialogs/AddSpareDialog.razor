@@ -7,14 +7,30 @@
     <DialogContent>
         <MudForm @ref="form">
             <MudTextField T="string" @bind-Value="@Name" Label="Spare Name" Required="true" RequiredError="Spare name is required!" />
-            <MudTextField T="string" @bind-Value="@Description" Label="Description" Lines="5" />
-            <MudSelect T="Guid" @bind-Value="@(CategoryId)" Placeholder="Input Category" Label="Category" Required="true" RequiredError="Category is required!" Error="_error">
+            @* <MudTextField T="string" @bind-Value="@Description" Label="Description" /> *@
+            @* <MudSelect T="Guid" @bind-Value="@(CategoryId)" Placeholder="Input Category" Label="Category" Required="true" RequiredError="Category is required!" Error="_error">
                 <MudSelectItem T="Guid" Disabled>Select Category</MudSelectItem>
                 @foreach ( var category in Elements){
                 <MudSelectItem Value="category.Id">@category.Name</MudSelectItem>
                 }
-            </MudSelect>
-            <MudTextField T="Decimal" @bind-Value="@Price" Label="Price" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentText="P" Validation="@(new RangeAttribute(1, 10000000) { ErrorMessage = "Price must be between 1 and 10000000"})" />
+            </MudSelect> *@
+            @* <MudTextField T="Decimal"
+                @bind-Value="@Price" 
+                Label="Price" 
+                Variant="Variant.Text" 
+                Adornment="Adornment.Start" 
+                AdornmentText="P" 
+                Validation="@(new RangeAttribute(1, 10000000) { ErrorMessage = "Price must be between 1 and 10000000"})" />
+            <MudNumericField T="int" 
+                @bind-Value="@ActualQuantity" 
+                Label="Actual Quantity" 
+                Variant="Variant.Text" 
+                HideSpinButtons=true/> *@
+           @*  <MudNumericField T="int" 
+                @bind-Value="@AvailableQuantity" 
+                Label="Available Quantity" 
+                Variant="Variant.Text" 
+                HideSpinButtons=true/> *@
         </MudForm>
     </DialogContent>
     <DialogActions>

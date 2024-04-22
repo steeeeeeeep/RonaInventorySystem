@@ -24,6 +24,7 @@ public partial class Order
 
     [CascadingParameter] private Action<string> SetAppBarTitle { get; set; }
     [Parameter] public Action ChangeParentState { get; set; }
+    [Inject] public IDialogService Dialog { get; set; } = default!;
 
     protected sealed override void OnInitialized()
     {
@@ -46,10 +47,13 @@ public partial class Order
             {
                 item.Status = SelectedStatus;
 
-                //if(SelectedStatus == "Cancelled")
-                //{
-                //    ProductRepository.ge
-                //}
+                if (SelectedStatus == "Cancelled")
+                {
+                    var product = ProductRepository.Get(x => x.Id, item.ProductId);
+                    product.AvailableQuantity++;
+
+                    await ProductRepository.FlushAsync();
+                }
             }
 
         }
@@ -63,10 +67,20 @@ public partial class Order
 
     protected void Close() => SelectedItems?.Clear();
 
-    protected async Task Update()
+    protected async Task Update(Guid id)
     {
-        await MinersRepository.FlushAsync();
-        Snackbar.Add("Successfuly Updated!", Severity.Success);
+        var parameters = new DialogParameters<UpdateOrders>();
+        parameters.Add("id", id);
+
+        var options = new DialogOptions { DisableBackdropClick = true };
+
+        var dialog = Dialog.Show<UpdateOrders>("Update Order", parameters, options);
+        var result = await dialog.Result;
+        if(!result.Canceled)
+        {
+            Snackbar.Add("Update succeed!");
+            await MinersRepository.LoadAsync();
+        }
     }
 
 

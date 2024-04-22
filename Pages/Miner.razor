@@ -32,7 +32,7 @@ else{
                 </MudItem>
                 <MudItem xs="2">
                     @* <MudTextField T="string" @bind-Value="CodeName" Variant="Variant.Outlined" Label="Code Name" Validation="true" /> *@
-                    <MudSelect T="string" @bind-Value="CodeName" Variant="Variant.Outlined"
+                    <MudSelect T="Guid" @bind-Value="ProductId" Variant="Variant.Outlined"
                                 Label="Code" 
                                 Placeholder="Enter Code" 
                                 Validation="true" 
@@ -40,9 +40,9 @@ else{
                                 TransformOrigin="Origin.BottomCenter">
                             @foreach(var product in Products)
                             {
-                                <MudSelectItem Value="product.Name">@product.Name</MudSelectItem>
+                                <MudSelectItem Value="product.Id">@product.Name</MudSelectItem>
                             }
-                        </MudSelect>
+                    </MudSelect>
                 </MudItem>
                 <MudItem xs="2">
                     <MudNumericField  @bind-Value="Price" Variant="Variant.Outlined" Label="Price" AdornmentText="Php" Adornment="Adornment.Start" Validation="true" />
@@ -51,7 +51,16 @@ else{
                     <MudDatePicker  @bind-Date="CreatedAt" Variant="Variant.Outlined" Label="Date" Validation="true" />
                 </MudItem>
                 <MudItem xs="2" Class="d-flex justify-content-center align-content-center align-items-center">
-                    <MudButton OnClick="Submit" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Add</MudButton>
+                    <MudButton OnClick="Submit" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" Disabled="@(IsSaving || CreatedAt.HasValue ? !IsDisabled : IsDisabled)">
+                        @if (IsSaving == false)
+                        {
+                            <p>Add</p>
+                        }
+                        else
+                        {
+                            <MudProgressCircular Indeterminate=true Size="Size.Medium" />
+                        }
+                    </MudButton>
                 </MudItem>
             </MudGrid>
         </MudForm>

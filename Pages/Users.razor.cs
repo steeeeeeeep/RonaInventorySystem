@@ -63,7 +63,13 @@ public partial class Users
         {
             { "ChangeParentState", new Action(StateHasChanged) }
         };
-        await DialogService.ShowAsync<Shared.Dialogs.AddUserDialog>("Add User", parameters);
+        var dialog = await DialogService.ShowAsync<Shared.Dialogs.AddUserDialog>("Add User", parameters);
+        var result = dialog.Result;
+
+        if(!result.IsCanceled)
+        {
+            await UserRepository.FlushAsync();
+        }
     }
 
     private void Reload()

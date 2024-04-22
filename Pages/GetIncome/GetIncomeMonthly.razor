@@ -1,11 +1,15 @@
 ﻿@layout MainLayout
 
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Sales> SalesRepository;
-@inject BikeSparesInventorySystem.Data.Repositories.Repository<Contributions> ContributionRepository;
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<MonthlySales> MonthlySalesRepository;
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Miners> MinersRepository
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Purchases> PurchaseRepository;
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Expenses> ExpensesRepository;
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Contributions> ContributionRepository;
 @inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
 
 <MudTable Items="@_MonthlySales"
+          @bind-SelectedItem="@SelectedMonthlySale"
           FixedHeader="@Fixed_header"
           FixedFooter="@Fixed_footer"
           Height="@(Fixed_header || Fixed_footer ? "calc(100vh - 64px - 64px - 64px)" : "")"
@@ -17,10 +21,7 @@
           SortLabel="Sort By"
           CommitEditTooltip="Commit Edit"
           RowsPerPage="25"
-          IsEditRowSwitchingBlocked="@BlockSwitch"
-          ApplyButtonPosition="@ApplyButtonPosition"
-          EditButtonPosition="@EditButtonPosition"
-          EditTrigger="TableEditTrigger.EditButton">
+          OnCommitEditClick="@UpdateMonthlySales">
 
         <ToolBarContent>
             @if (AuthService.IsUserAdmin())
@@ -83,7 +84,7 @@
             <MudTh Style="white-space: nowrap;"></MudTh>
         </HeaderContent>
         <RowTemplate>
-        <MudTd Style="white-space: nowrap;" DataLabel="Miners Date">@(new DateTime(context.Year, context.Month, 1).ToString("MMM yyyy"))</MudTd>
+            <MudTd Style="white-space: nowrap;" DataLabel="Miners Date">@(new DateTime(context.Year, context.Month, 1).ToString("MMM yyyy"))</MudTd>
             <MudTd Style="white-space: nowrap;" DataLabel="Gross Sale">@context.GrossSale</MudTd>
             <MudTd Style="white-space: nowrap;" DataLabel="Purchases">@context.Purchases</MudTd>
             <MudTd Style="white-space: nowrap;" DataLabel="Expenses">@context.Expenses</MudTd>
@@ -95,5 +96,4 @@
             <MudTd Style="white-space: nowrap;" DataLabel="Profit">@context.Profit</MudTd>
             <MudTd Style="white-space: nowrap;" DataLabel="Action" />
         </RowTemplate>
-
 </MudTable>

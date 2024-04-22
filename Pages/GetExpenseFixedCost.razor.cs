@@ -39,6 +39,7 @@ public partial class GetExpenseFixedCost
         {
             {"ChangeParentState", new Action(StateHasChanged) }
         };
+
         await DialogService.ShowAsync<AddFixedCost>("Add Expenses", parameters);
     }
 

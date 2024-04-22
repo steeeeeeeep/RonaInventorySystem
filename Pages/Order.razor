@@ -12,6 +12,7 @@
 <MudTable Items="@Miners"
           Elevation="0"
           MultiSelection
+          SelectOnRowClick=false
           @bind-SelectedItems="SelectedItems"
           FixedHeader="@Fixed_header"
           FixedFooter="@Fixed_footer"
@@ -24,15 +25,7 @@
           Filter="new Func<Miners,bool>(FilterFunc)"
           @bind-SelectedItem="SelectedItem"
           SortLabel="Sort By"
-          CommitEditTooltip="Commit Edit"
-          RowsPerPage="25"
-          OnCommitEditClick="@Update"
-          RowEditPreview="BackupItem"
-          RowEditCancel="ResetItemToOriginalValues"
-          IsEditRowSwitchingBlocked="@BlockSwitch"
-          ApplyButtonPosition="@ApplyButtonPosition"
-          EditButtonPosition="@EditButtonPosition"
-          EditTrigger="@EditTrigger">
+          RowsPerPage="25">
     <ToolBarContent>
 
         @if (AuthService.IsUserAdmin())
@@ -41,30 +34,35 @@
                 <ImportButton T="Miners" ChangeParentState="StateHasChanged" />
                 <ExportButton T="Miners" />
             </MudStack>
-        }
-        <MudSpacer />
 
-        @if (IsSelectionActive)
-        {
-            <MudStack Row Class="d-flex align-items-center justify-content-center align-content-center">
-                <MudSelect @bind-Value="@SelectedStatus" 
-                    OnAdornmentClick="Close" 
-                    AdornmentIcon="@Icons.Material.Filled.Close" 
-                    AdornmentColor="Color.Info"
-                    Placeholder="Select Status"
-                >
-                    <MudSelectItem Value="@("Pending")" />
-                    <MudSelectItem Value="@("Delivered")" />
-                    <MudSelectItem Value="@("Cancelled")" />
-                </MudSelect>
-                <MudButton OnClick="UpdateStatus" Variant="Variant.Outlined" Color="Color.Info">Update</MudButton>
-            </MudStack>
+            @if (IsSelectionActive)
+            {
+                <MudStack Row Class="d-flex align-items-center justify-content-center align-content-center">
+                        <MudSelect @bind-Value="@SelectedStatus"
+                                OnAdornmentClick="Close"
+                                AdornmentIcon="@Icons.Material.Filled.Close"
+                                AdornmentColor="Color.Info"
+                                Placeholder="Select Status">
+                            <MudSelectItem Value="@("Pending")" />
+                            <MudSelectItem Value="@("Delivered")" />
+                            <MudSelectItem Value="@("Cancelled")" />
+                        </MudSelect>
+                        <MudButton OnClick="UpdateStatus" Variant="Variant.Outlined" Color="Color.Info" Disabled="@(SelectedStatus != null ? false : true)">Update</MudButton>
+                    </MudStack>
+            }
         }
+
+        <MudSpacer />
 
         <MudSpacer/>
         
         <MudStack Row="true" Class="p-2">
-            @if(!IsSelectionActive){
+            @if(!IsSelectionActive && AuthService.IsUserAdmin()){
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="SearchString" Label="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable="true"></MudTextField>
+                </MudItem>
+            }
+            @if(!AuthService.IsUserAdmin()){
                 <MudItem xs="12">
                     <MudTextField @bind-Value="SearchString" Label="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable="true"></MudTextField>
                 </MudItem>
@@ -86,7 +84,7 @@
     <HeaderContent>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Id)">Name</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Code)">Code</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Price)">Price</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Price)">Amount</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Miners, object>(x=>x.CreatedAt)">Date Ordered</MudTableSortLabel></MudTh>
     </HeaderContent>
@@ -94,7 +92,7 @@
         <MudTd Style="white-space: nowrap;" DataLabel="Spare Name">@context.Name</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Category">@context.Code</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Price">P @context.Price</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Action">
+        <MudTd Style="white-space: nowrap;" DataLabel="Status">
 
             @if (context.Status == "Cancelled")
             {
@@ -115,26 +113,11 @@
                 </MudTooltip>
             }
             </MudTd>
-            <MudTd Style="white-space: nowrap;" DataLabel="CreatedAt">@context.CreatedAt.GetValueOrDefault().ToString("MMM dd, yyyy")</MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="CreatedAt">@context.CreatedAt.GetValueOrDefault().ToString("MMM dd, yyyy")</MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="Action">
+            <MudIconButton OnClick="() => Update(context.Id)" Icon="@Icons.Material.Filled.Edit" Color="Color.Success" Disabled="@(context.Status != "Pending")"/>
+        </MudTd>
     </RowTemplate>
-    <RowEditingTemplate>
-        <MudTd DataLabel="Spare Name">
-            <MudTextField @bind-Value="context.Name" />
-        </MudTd>
-        <MudTd DataLabel="Category">
-            <MudTextField @bind-Value="context.Code" />
-        </MudTd>
-        <MudTd DataLabel="Price">
-            <MudTextField @bind-Value="context.Price" />
-        </MudTd>
-        <MudTd DataLabel="Action">
-            <MudSelect @bind-Value="context.Status">
-                <MudSelectItem Value="@("Pending")" />
-                <MudSelectItem Value="@("Delivered")" />
-                <MudSelectItem Value="@("Cancelled")" />
-            </MudSelect>
-        </MudTd>
-    </RowEditingTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, 200, 300,}" />
     </PagerContent>

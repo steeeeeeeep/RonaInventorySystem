@@ -7,10 +7,10 @@
 @inject IDialogService DialogService;
 
 <MudPaper Elevation="0" >
-    <div class="d-flex justify-content-center pt-3">
+    <div class="d-flex flex-column justify-content-center pt-3">
         @if (AuthService.IsUserAdmin())
         {
-            <MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Label="Add Contribution" DisableElevation="true"  OnClick="AddContribution" />
+            <MudFab class="me-4" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Label="Add Contribution" DisableElevation="true" OnClick="AddContribution" />
         }
 
         <br/>

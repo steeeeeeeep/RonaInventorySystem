@@ -31,9 +31,11 @@ public partial class Miner
 
     private string MinersName;
     private string CodeName;
+    private Guid ProductId;
     private decimal Price;
     public DateTime ? CreatedAt;
     private bool IsSaving = false;
+    private bool IsDisabled = true;
 
     private Dictionary<string, Miners> uniqueMiners = new Dictionary<string, Miners>();
     private Dictionary<string, int> orderCounts = new Dictionary<string, int>();
@@ -49,6 +51,8 @@ public partial class Miner
         {
             ReadOnly = true;
         }
+
+        ProductId = Products.Select(x => x.Id).FirstOrDefault();
     }
 
     protected async Task LoadData()
@@ -119,12 +123,16 @@ public partial class Miner
         await form.Validate();
         if (form.IsValid)
         {
+            IsSaving = true;
+
+            CodeName = Products.Where(n => n.Id == ProductId).Select(n => n.Name).FirstOrDefault();
             Miners Miner = new()
             {
                 Name = MinersName,
                 Code = CodeName,
                 Price = Price,
-                CreatedAt = CreatedAt
+                CreatedAt = CreatedAt,
+                ProductId = ProductId
             };
 
             //var CheckMiners = MinersRepository.GetAll().Where(x => x.Name == MinersName).ToList();
@@ -135,22 +143,17 @@ public partial class Miner
             //}
 
             MinersRepository.Add(Miner);
-
-            if (IsSaving)
-            {
-                return;
-            }
-
-            IsSaving = true;
             var result = MinersRepository.FlushAsync();
+            await Task.Delay(250);
 
             if (result.IsCompletedSuccessfully)
             {
-                var products = ProductRepository.Get(x => x.Name, Miner.Code);
+                var products = Products.Where(p => p.Id == ProductId).FirstOrDefault();
                 if (products != null)
                 {
                      products.AvailableQuantity--;
                     await ProductRepository.FlushAsync();
+                    await Task.Delay(250);
                 }
 
                 await LoadData();

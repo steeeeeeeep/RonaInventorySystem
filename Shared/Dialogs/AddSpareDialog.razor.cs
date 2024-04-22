@@ -12,6 +12,8 @@ public partial class AddSpareDialog
     private string Description;
     private Guid CategoryId;
     private decimal Price;
+    private int AvailableQuantity;
+    private int ActualQuantity;
     private IEnumerable<Category> Elements;
 
     private void Cancel()
@@ -27,7 +29,7 @@ public partial class AddSpareDialog
     private async Task AddSpare()
     {
         await form.Validate();
-        if (form.IsValid && CategoryId != Guid.Empty)
+        if (form.IsValid)
         {
             try
             {
@@ -37,6 +39,8 @@ public partial class AddSpareDialog
                     Description = Description,
                     CategoryId = CategoryId,
                     Price = Price,
+                    ActualQuantity = ActualQuantity,
+                    AvailableQuantity = AvailableQuantity,
                 };
                 SpareRepository.Add(spare);
                 await SpareRepository.FlushAsync();

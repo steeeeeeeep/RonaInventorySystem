@@ -8,6 +8,8 @@ public class Purchases : IModel, ICloneable
     public int Items { get; set; }
     public string Vendor { get; set; }
     public decimal Amount { get; set; }
+    public string ProductName { get; set; }
+    public Guid ProductId { get; set; }
     public DateTime ? Acquired { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
@@ -21,6 +23,8 @@ public class Purchases : IModel, ICloneable
             Units = Units,
             Items = Items,
             Amount = Amount,
+            ProductName = ProductName,
+            ProductId = ProductId,
             Acquired = Acquired,
             CreatedAt = CreatedAt,
         };

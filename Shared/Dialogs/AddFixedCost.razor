@@ -1,9 +1,9 @@
 ﻿@inject BikeSparesInventorySystem.Data.Repositories.Repository<Expenses> ExpensesRepository
 
-<MudDialog>
+<MudDialog Class="p-5">
     <DialogContent>
-        <MudGrid>
-            <MudForm @ref="mudForm">
+        <MudForm @ref="mudForm">
+            <MudGrid>
                 <MudItem xs="12">
                     <MudTextField @bind-Value="@Name" T="string" Placeholder="Expenses Name" Label="Expenses Name" />
                  </MudItem>
@@ -19,15 +19,15 @@
                  </MudItem>
                 <MudItem xs="12">
                     <MudDatePicker @bind-Date="@DateOfExpense" 
+                        PickerVariant="PickerVariant.Dialog"
+                        Class=" position-absolute"
                         ClosingDelay="1" 
-                        PickerVariant="PickerVariant.Dialog" 
-                        Required Elevation="0" 
-                        Orientation="Orientation.Landscape" 
+                        Required 
                         Placeholder="Date Name" 
                         Label="Date"/>
                  </MudItem>
-             </MudForm>
-         </MudGrid>
+             </MudGrid>
+        </MudForm>
      </DialogContent>
      <DialogActions>
          <MudButton OnClick="Cancel">Cancel</MudButton>

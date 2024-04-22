@@ -22,15 +22,15 @@ public static class MauiProgram
 
         builder.Services.AddMudServices(config =>
         {
-            config.SnackbarConfiguration.VisibleStateDuration = 4000;
+            config.SnackbarConfiguration.VisibleStateDuration = 1000;
             config.SnackbarConfiguration.HideTransitionDuration = 200;
             config.SnackbarConfiguration.ShowTransitionDuration = 200;
             config.SnackbarConfiguration.MaxDisplayedSnackbars = 6;
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomStart;
         });
 
-        // builder.Services.AddCsvFileProvider();
-        // builder.Services.AddExcelFileProvider();
+        builder.Services.AddCsvFileProvider();
+        builder.Services.AddExcelFileProvider();
         builder.Services.AddJsonFileProvider();
 
         builder.Services.AddRepository();

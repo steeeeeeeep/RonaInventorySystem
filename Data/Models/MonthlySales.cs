@@ -4,6 +4,7 @@ namespace BikeSparesInventorySystem.Data.Models;
 public class MonthlySales : IModel
 {
     public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid DailySalesId { get; set; }
     public decimal GrossSale { get; set; }
     public decimal MonthlyNetIncome { get; set; }
     public decimal Tithes { get; set; }
@@ -23,6 +24,7 @@ public class MonthlySales : IModel
         return new MonthlySales
         {
             Id = Id,
+            DailySalesId = DailySalesId,
             GrossSale = GrossSale,
             MonthlyNetIncome = MonthlyNetIncome,
             Tithes = Tithes,

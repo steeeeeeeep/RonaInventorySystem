@@ -47,15 +47,30 @@ else
                     <MudTd Style="white-space: nowrap;" DataLabel="Price">@context.Price</MudTd>
             </RowTemplate>
             <RowEditingTemplate>
-                <MudTd DataLabel="Spare Name">
-                    <MudTextField @bind-Value="context.Name" />
-                </MudTd>
-                <MudTd DataLabel="Category">
-                    <MudTextField @bind-Value="context.Code" />
-                </MudTd>
-                <MudTd DataLabel="Price">
-                    <MudTextField @bind-Value="context.Price" />
-                </MudTd>
+                @if(context.Status == "Pending")
+                {
+                    <MudTd DataLabel="Spare Name">
+                        <MudTextField @bind-Value="context.Name" />
+                    </MudTd>
+                    <MudTd DataLabel="Category">
+                        <MudTextField @bind-Value="context.Code" />
+                    </MudTd>
+                    <MudTd DataLabel="Price">
+                        <MudTextField @bind-Value="context.Price" />
+                    </MudTd>
+                }
+                else
+                {
+                    <MudTd DataLabel="Spare Name">
+                        <MudField>@context.Name</MudField> 
+                    </MudTd>
+                    <MudTd DataLabel="Category">
+                        <MudField>@context.Code</MudField> 
+                    </MudTd>
+                    <MudTd DataLabel="Price">
+                        <MudField>@context.Price</MudField> 
+                    </MudTd>
+                }
             </RowEditingTemplate>
         </MudTable>
     }

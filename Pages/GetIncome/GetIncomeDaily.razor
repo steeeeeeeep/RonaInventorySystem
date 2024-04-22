@@ -24,12 +24,7 @@
           SortLabel="Sort By"
           CommitEditTooltip="Commit Edit"
           RowsPerPage="25"
-          OnCommitEditClick="@Update"
-          RowEditPreview="BackupItem"
-          IsEditRowSwitchingBlocked="@BlockSwitch"
-          ApplyButtonPosition="@ApplyButtonPosition"
-          EditButtonPosition="@EditButtonPosition"
-          EditTrigger="TableEditTrigger.EditButton">
+          ApplyButtonPosition="@ApplyButtonPosition">
     <ToolBarContent>
         @if (AuthService.IsUserAdmin())
         {
@@ -54,84 +49,11 @@
     <HeaderContent>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.DailyDate)">Date</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.GrossSale)">Gross Sales</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Purchases)">Purchases</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Expenses)">Misc</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.DailyNetIncome)">Net Sales</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;">
-            <div class="d-flex flex-column justify-content-center">
-                <MudText Typo="Typo.body1" Class="p-0 m-0">Tithes</MudText>
-                <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Tithes + "%" : "%" )</MudText>
-            </div>
-        </MudTh>
-        <MudTh Style="white-space: nowrap;">
-            <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Charity)">
-                <div class="d-flex flex-column justify-content-center">
-                    <MudText Typo="Typo.body1" Class="p-0 m-0">Charity</MudText>
-                    <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Charity + "%" : "%")</MudText>
-                </div>
-            </MudTableSortLabel>
-        </MudTh>
-        <MudTh Style="white-space: nowrap;">
-            <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Car)">
-                <div class="d-flex flex-column justify-content-center">
-                    <MudText Typo="Typo.body1" Class="p-0 m-0">Car</MudText>
-                    <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.CarExpense + "%" : "%")</MudText>
-                </div>
-            </MudTableSortLabel>
-        </MudTh>
-        <MudTh Style="white-space: nowrap;">
-            <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.OtherContribution)">
-                <div class="d-flex flex-column justify-content-center">
-                    <MudText Typo="Typo.body1" Class="p-0 m-0">Others</MudText>
-                    <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Others + "%" : "%")</MudText>
-                </div>
-            </MudTableSortLabel>
-        </MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Profit)">Profit</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd Style="white-space: nowrap;" DataLabel="Miners Date">@context.DailyDate.ToString("dd/MM/yyyy")</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Gross Sale">@context.GrossSale</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Purchases">@context.Purchases</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Expenses">@context.Expenses</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Net Sale">@context.DailyNetIncome</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Thithes">@context.Tithes</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Charity">@context.Charity</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Car">@context.Car</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Car">@context.OtherContribution</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Profit">@context.Profit</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Action" />
     </RowTemplate>
-    <RowEditingTemplate>
-        <MudTd DataLabel="Miners Date">
-            @context.DailyDate
-        </MudTd>
-        <MudTd DataLabel="Gross Sale">
-            @context.GrossSale
-        </MudTd>
-        <MudTd DataLabel="Miners Date">
-            <MudSelect @bind-Value="PurchaseId">
-                @foreach (var purchase in _Purchases)
-                {
-                    <MudSelectItem Value="@purchase.Id">@purchase.CreatedAt.ToString("MMM dd, yyyy")</MudSelectItem>
-                }
-            </MudSelect>
-        </MudTd>
-        <MudTd DataLabel="Expenses">
-            <MudSelect @bind-Value="ExpenseId">
-                @foreach (var expense in _Expenses)
-                {
-                    <MudSelectItem Value="expense.Id">@(expense.DateOfExpense.HasValue ? expense.DateOfExpense.Value.ToString("MMM dd, yyyy") : "N/A")</MudSelectItem>
-                }
-            </MudSelect>
-        </MudTd>
-        <MudTd DataLabel="Net Sale">@context.DailyNetIncome</MudTd>
-        <MudTd DataLabel="Thithes">@context.Tithes</MudTd>
-        <MudTd DataLabel="Charity">@context.Charity</MudTd>
-        <MudTd DataLabel="Car">@context.Car</MudTd>
-        <MudTd DataLabel="Profit">@context.Profit</MudTd>
-    </RowEditingTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, 200, 300,}" />
     </PagerContent>

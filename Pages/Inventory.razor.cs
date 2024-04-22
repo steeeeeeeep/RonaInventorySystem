@@ -114,7 +114,8 @@ public partial class Inventory
             {
                 { "ChangeParentState", new Action(StateHasChanged) }
             };
-            await DialogService.ShowAsync<AddSpareDialog>("Add Product", parameters);
+            var options = new DialogOptions { MaxWidth = MaxWidth.Medium };
+            await DialogService.ShowAsync<AddSpareDialog>("Add Product", parameters, options);
         //}
         //else
         //{
@@ -134,10 +135,10 @@ public partial class Inventory
     {
         if (action == StockAction.Deduct)
         {
-            if (!ApproveButton.ValidateWeekAndTime(Snackbar))
-            {
-                return;
-            }
+            //if (!ApproveButton.ValidateWeekAndTime(Snackbar))
+            //{
+            //    return;
+            //}
 
             if (spare.AvailableQuantity == 0)
             {

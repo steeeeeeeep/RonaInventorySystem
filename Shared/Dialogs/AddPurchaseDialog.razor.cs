@@ -8,14 +8,20 @@ public partial class AddPurchaseDialog
     [Inject] public ISnackbar Snackbar { get; set; }
 
     private MudForm form;
+    private IEnumerable<Spare> Products;
 
     private string Name;
-    private string Vendor;
-    private int Unit;
+    private Guid ProductId;
     private decimal Amount;
     private int Items;
     private DateTime ? Acquired;
     private bool IsSaving;
+
+    protected sealed override void OnParametersSet()
+    {
+        Products = ProductRepository.GetAll();
+        ProductId = Products.Select(x => x.Id).FirstOrDefault();
+    }
 
     private async Task AddPurchase()
     {
@@ -24,28 +30,30 @@ public partial class AddPurchaseDialog
         {
             try
             {
+                IsSaving = true;
+                var product = ProductRepository.Get(x => x.Id, ProductId);
                 Purchases purchases = new()
                 {
                     Name = Name,
-                    Vendor = Vendor,
-                    Units = Unit,
+                    ProductId = ProductId,
+                    ProductName = product.Name,
                     Amount = Amount,
                     Items = Items,
                     Acquired = Acquired
                 };
 
-                Sales sales = new()
-                {
-                    Purchases = Amount,
-                    PurchaseDate = DateTime.Now,
-                };
-
                 PurchaseRepository.Add(purchases);
-                await PurchaseRepository.FlushAsync();
-                SalesRepository.Add(sales);
-                await SalesRepository.FlushAsync();
+                var result = PurchaseRepository.FlushAsync();
+
+                if(result.IsCompletedSuccessfully)
+                {
+                    product.AvailableQuantity += Items;
+                    await ProductRepository.FlushAsync();
+
+                    await Task.Delay(250);
+                }
+
                 ChangeParentState.Invoke();
-                IsSaving = true;
 
                 Snackbar.Add($"{Name} is added!", Severity.Success);
                 MudDialog.Close();

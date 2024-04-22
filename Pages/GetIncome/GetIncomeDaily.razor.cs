@@ -38,6 +38,7 @@ public partial class GetIncomeDaily
         _Expenses = ExpensesRepository.GetAll();
         _GetActiveContributions = ContributionRepository.Get(s => s.Status, Status.Active);
     }
+
     private void BackupItem(object element)
     {
         ElementBeforeEdit = ((Sales)element).Clone() as Sales;
@@ -68,8 +69,8 @@ public partial class GetIncomeDaily
                 Sales sales = new()
                 {
                     GrossSale = saleData.GrossSale,
-                    DailyDate = saleData.Date
-                };
+                    DailyDate = saleData.Date,
+            };
 
                 SalesRepository.Add(sales);
                 await SalesRepository.FlushAsync();
@@ -81,28 +82,14 @@ public partial class GetIncomeDaily
                 if (existing != null && ActiveContribution != null)
                 {
                     existing.GrossSale = saleData.GrossSale;
-                    existing.DailyNetIncome = existing.GrossSale - existing.Expenses - existing.Purchases;
-                    existing.Tithes = existing.DailyNetIncome * ((decimal)ActiveContribution.Tithes / 100);
-                    existing.Car = existing.DailyNetIncome * ((decimal)ActiveContribution.CarExpense / 100);
-                    existing.Charity = existing.DailyNetIncome * ((decimal)ActiveContribution.Charity / 100);
-                    existing.OtherContribution = existing.DailyNetIncome * ((decimal)ActiveContribution.Others / 100);
-                    existing.Profit = existing.DailyNetIncome - existing.Tithes - existing.Car - existing.Charity - existing.OtherContribution;
                 }
-                else
-                {
-                    existing.GrossSale = saleData.GrossSale;
-                    existing.DailyNetIncome = existing.GrossSale - existing.Expenses - existing.Purchases;
-                    existing.Tithes = 0;
-                    existing.Car = 0;
-                    existing.Charity = 0;
-                    existing.Profit = existing.DailyNetIncome - existing.Tithes - existing.Car - existing.Charity - existing.OtherContribution;
-                }
+
                 await SalesRepository.FlushAsync();
                 Snackbar.Add("Sales is up to date!", Severity.Info);
             }
             else
             {
-                Snackbar.Add("Sales is up to date!", Severity.Info);
+                Snackbar.Add("Sales is up to date!", Severity.Warning);
             }
         }
     }

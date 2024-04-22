@@ -84,6 +84,48 @@ internal static class Seeder
         return activityLogFaker.GenerateBetween(min, max);
     }
 
+    //public static ICollection<Sales> GenerateSales( int min, int max)
+    //{
+    //    Faker<Sales> Faker = new Faker<Sales>()
+    //        .RuleFor(x => x.Car, y => y.Random.Int(1000, 10000))
+    //        .RuleFor(x => x.Charity, y => y.Random.Int(1000, 10000))
+    //        .RuleFor(x => x.Expenses, y => y.Random.Int(1000, 10000))
+    //        .RuleFor(x => x.Purchases, y => y.Random.Int(1000, 10000))
+    //        .RuleFor(x => x.Tithes, y => y.Random.Int(1000, 10000))
+    //        .RuleFor(x => x.DailyNetIncome, y => y.Random.Int(1000, 10000))
+    //        .RuleFor(x => x.GrossSale, y => y.Random.Int(1000, 10000))
+    //        .RuleFor(x => x.Profit, y => y.Random.Int(1000, 10000));
+
+    //    return Faker.GenerateBetween(min, max);
+    //}
+
+    //public static ICollection<Expenses> GenerateExpenses( int min, int max )
+    //{
+    //    DateTime endDate = DateTime.Now;
+    //    DateTime startDate = endDate.Subtract(TimeSpan.FromDays(365 * 2));
+    //    Faker<Expenses> ExpensesFaker = new Faker<Expenses>()
+    //        .RuleFor(x => x.DateOfExpense, y => y.Date.Between(startDate, endDate))
+    //        .RuleFor(x => x.Name, y => y.Name.Random.String());
+
+    //    return ExpensesFaker.GenerateBetween(min, max);
+    //}
+
+    //public static ICollection<Miners> GenerateMiners(int min, int max )
+    //{
+
+    //    DateTime endDate = DateTime.Now;
+    //    DateTime startDate = endDate.Subtract(TimeSpan.FromDays(365 * 2));
+    //    Faker<Miners> MinersFaker = new Faker<Miners>()
+    //        .RuleFor(x => x.Code, y => y.Random.Word())
+    //        .RuleFor(x => x.Name, y => y.Random.Word())
+    //        .RuleFor(x => x.Price, y => y.Random.Int(1000, 10000))
+    //        .RuleFor(x => x.CreatedAt, y => y.Date.Between(startDate, endDate))
+    //        .RuleFor(x => x.DateUpdated.Date, y => y.Date.Between(startDate, endDate))
+    //        .RuleFor(x => x.Status, (f, x) => f.PickRandom<Status>().ToString());
+        
+    //    return MinersFaker.GenerateBetween(min, max);
+    //}
+
     public static void OnDebugConsoleWriteUserNames(ICollection<User> collection)
     {
         foreach (User i in collection)

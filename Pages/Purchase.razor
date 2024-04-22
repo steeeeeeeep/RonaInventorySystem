@@ -52,7 +52,7 @@
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Name)">Name</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Items)">Items</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Amount)">Amount</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Vendor)">Vendor</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.ProductName)">Product Category</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Units)">Units</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Acquired)">Acquired Date</MudTableSortLabel></MudTh>
     </HeaderContent>
@@ -60,8 +60,8 @@
         <MudTd Style="white-space: nowrap;" DataLabel="Name">@context.Name</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Items">@context.Items</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Amount">Php @context.Amount</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Amount">@(context.Vendor == string.Empty ? "<p class='text-secondary'>No Vendor</p>" : context.Vendor)</MudTd>
-        <MudTd DataLabel="Available Quantity">
+        <MudTd Style="white-space: nowrap;" DataLabel="Product">@(context.ProductName)</MudTd> 
+        @* <MudTd DataLabel="Available Quantity">
             @if (@context.Units == 0)
             {
                 <MudText Color="Color.Secondary">Stockout</MudText>
@@ -70,7 +70,7 @@
             {
                 @context.Units
             }
-        </MudTd>
+        </MudTd> *@
         <MudTd Style="white-space: nowrap;" DataLabel="Acquired">@context.Acquired</MudTd>
         <MudTd DataLabel="Action">
             @* <MudStack Row="true">
