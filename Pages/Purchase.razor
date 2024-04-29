@@ -18,15 +18,7 @@
     CanCancelEdit="@CanCancelEdit"
     Filter="new Func<Purchases,bool>(FilterFunc)"
         SortLabel="Sort By" 
-        CommitEditTooltip="Commit Edit"
-        RowsPerPage="25"
-        OnCommitEditClick="@Update"
-        RowEditPreview="BackupItem"
-        RowEditCancel="ResetItemToOriginalValues"
-        IsEditRowSwitchingBlocked="@BlockSwitch"
-        ApplyButtonPosition="@ApplyButtonPosition"
-        EditButtonPosition="@EditButtonPosition"
-        EditTrigger="@EditTrigger">
+        RowsPerPage="25">
     <ToolBarContent>
         @if (AuthService.IsUserAdmin())
         {
@@ -53,7 +45,6 @@
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Items)">Items</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Amount)">Amount</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.ProductName)">Product Category</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Units)">Units</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Purchases, object>(x=>x.Acquired)">Acquired Date</MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
@@ -71,35 +62,28 @@
                 @context.Units
             }
         </MudTd> *@
-        <MudTd Style="white-space: nowrap;" DataLabel="Acquired">@context.Acquired</MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="Acquired">@context.Acquired.Value.ToString("MMM dd, yyyy")</MudTd>
         <MudTd DataLabel="Action">
-            @* <MudStack Row="true">
+            <MudStack Row="true">
                 @if (AuthService.IsUserAdmin())
                 {
-                    <MudTooltip Text="@($"{Enum.GetName(StockAction.Add)} Stock")">
-                        <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Primary" OnClick="() => ActOnStock(context ,StockAction.Add)" />
+                    <MudTooltip Text="@("Edit")">
+                        <MudIconButton OnClick="() => ShowEdit(context.Id)" Icon="@Icons.Material.Filled.Edit" Color="Color.Success" />
+                    </MudTooltip>
+                    <MudTooltip Text="@("Delete")">
+                        <MudIconButton OnClick="() => ShowDelete(context.Id)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
                     </MudTooltip>
                 }
-                <MudTooltip Text="@($"{Enum.GetName(StockAction.Deduct)} Stock")">
+                @* <MudTooltip Text="@($"{Enum.GetName(StockAction.Deduct)} Stock")">
                     <MudIconButton Icon="@Icons.Material.Filled.Remove" Color="Color.Secondary" OnClick="() => ActOnStock(context, StockAction.Deduct)" />
                 </MudTooltip>
                 <MudTooltip Text="Show Details">
                     <MudIconButton OnClick="@(() => ShowBtnPress(@context.Id))" Color="Color.Info"
                                    Icon="@((GetShow(@context.Id)) ? @Icons.Material.Filled.ArrowDropUp : @Icons.Material.Filled.ArrowDropDown)" />
-                </MudTooltip>
-            </MudStack> *@
+                </MudTooltip> *@
+            </MudStack>
         </MudTd>
     </RowTemplate>
-  @*   <ChildRowContent>
-        @if (GetShow(@context.Id))
-        {
-            <td colspan="6">
-                <MudContainer MaxWidth="MaxWidth.Medium">
-                    <MudText Style="padding: 40px">@context.Description</MudText>
-                </MudContainer>
-            </td>
-        }
-    </ChildRowContent> *@
     <RowEditingTemplate>
         <MudTd DataLabel="Name">
             <MudTextField @bind-Value="@context.Name" />
@@ -111,13 +95,10 @@
              <MudTextField @bind-Value="@context.Amount" Required />
          </MudTd>
          <MudTd DataLabel="Vendor">
-             <MudTextField @bind-Value="@context.Vendor" Required />
-         </MudTd>
-         <MudTd DataLabel="Available Quantity">
-             <MudTextField @bind-Value="@context.Units" Required />
+             <MudField>@context.ProductName</MudField>
          </MudTd>
          <MudTd DataLabel="Acquired">
-             <MudTextField @bind-Value="@context.Acquired" Required />
+             <MudDatePicker @bind-Value="@context.Acquired" Required />
          </MudTd>
      </RowEditingTemplate>
      <PagerContent>

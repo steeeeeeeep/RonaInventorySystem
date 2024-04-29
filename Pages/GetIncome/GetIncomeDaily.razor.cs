@@ -102,7 +102,7 @@ public partial class GetIncomeDaily
                     .Select(x => x.Amount).FirstOrDefault();
 
         var expenses = _Expenses.Where(x => x.Id == ExpenseId)
-                    .Select(x => x.DirectCostId).FirstOrDefault();
+                    .Select(x => x.Amount).FirstOrDefault();
 
         var contributions = ContributionRepository.Get(s => s.Status, Status.Active);
 

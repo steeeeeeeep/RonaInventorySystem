@@ -1,25 +1,24 @@
-﻿namespace BikeSparesInventorySystem.Shared.Dialogs;
+﻿namespace BikeSparesInventorySystem.Shared.Dialogs.ExpensesDialog;
 
-public partial class AddFixedCost
+public partial class AddExpenses
 {
-    [CascadingParameter] public MudDialogInstance Dialog {  get; set; }
+    [CascadingParameter] public MudDialogInstance Dialog { get; set; }
     [Parameter] public Action ChangeParentState { get; set; }
 
     private MudForm mudForm;
     private string Error { get; set; }
     private bool errorStatus;
     //private int numberValue;
-    private string Name {  get; set; }
-    private int FixedCost { get; set; }
-    private int DirectCost { get; set; }
+    private string Name { get; set; }
+    private int Amount { get; set; }
     private DateTime? DateOfExpense { get; set; }
 
     private async Task AddExpense()
     {
         await mudForm.Validate();
-        if(mudForm.IsValid)
+        if (mudForm.IsValid)
         {
-            if (DirectCost == 0)
+            if (Amount == 0)
             {
                 errorStatus = true;
                 Error = "Expenses should not be 0 \uD83D\uDE01";
@@ -29,8 +28,7 @@ public partial class AddFixedCost
                 Expenses expenses = new()
                 {
                     Name = Name,
-                    FixedCostId = FixedCost,
-                    DirectCostId = DirectCost,
+                    Amount = Amount,
                     DateOfExpense = DateOfExpense
                 };
 
@@ -44,5 +42,5 @@ public partial class AddFixedCost
         }
     }
 
-    private void Cancel () => Dialog.Cancel();
+    private void Cancel() => Dialog.Cancel();
 }

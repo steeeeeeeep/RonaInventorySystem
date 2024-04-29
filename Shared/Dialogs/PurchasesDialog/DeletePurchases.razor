@@ -1,0 +1,27 @@
+﻿@inject BikeSparesInventorySystem.Data.Repositories.Repository<Purchases> PurchasesRepository
+@inject BikeSparesInventorySystem.Data.Repositories.Repository<Spare> ProductRepository
+
+<MudDialog>
+    <DialogContent>
+        <MudText>Are you sure you want to delete this record?</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Disabled="isSaving">Cancel</MudButton>
+        <MudButton OnClick="DeletePurchasesAsync"
+            Color="Color.Error"
+            Variant="Variant.Filled"
+            Disabled="isSaving">
+        
+            @if (isSaving)
+            {
+                <p>Saving</p>
+                <MudProgressCircular Indeterminate=true />
+            }
+            else
+            {
+                <p>Save Changes</p>
+            }
+
+        </MudButton>
+    </DialogActions>
+</MudDialog>

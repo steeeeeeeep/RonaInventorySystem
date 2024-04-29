@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using BikeSparesInventorySystem.Shared.Dialogs.ExpensesDialog;
 
 namespace BikeSparesInventorySystem.Pages;
 
@@ -40,7 +37,39 @@ public partial class GetExpenseFixedCost
             {"ChangeParentState", new Action(StateHasChanged) }
         };
 
-        await DialogService.ShowAsync<AddFixedCost>("Add Expenses", parameters);
+        await DialogService.ShowAsync<AddExpenses>("Add Expenses", parameters);
+    }
+
+    protected async Task ShowDelete(Guid id)
+    {
+        var parameters = new DialogParameters<DeleteExpenses>();
+        parameters.Add(x => x.ExpenseId, id);
+
+        var options = new DialogOptions { DisableBackdropClick = true };
+
+        var dialog = DialogService.Show<DeleteExpenses>("Delete expenses", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await ExpensesRepository.LoadAsync();
+        }
+    }
+
+    protected async Task ShowEdit(Guid id)
+    {
+        var parameters = new DialogParameters<EditExpenses>();
+        parameters.Add(x => x.ExpenseId, id);
+
+        var options = new DialogOptions { DisableBackdropClick = true };
+
+        var dialog = DialogService.Show<EditExpenses>("Edit expenses", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await ExpensesRepository.LoadAsync();
+        }
     }
 
     //private void FilterByMonth(string a)

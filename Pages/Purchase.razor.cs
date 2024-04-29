@@ -1,4 +1,6 @@
-﻿namespace BikeSparesInventorySystem.Pages;
+﻿using BikeSparesInventorySystem.Shared.Dialogs.PurchasesDialog;
+
+namespace BikeSparesInventorySystem.Pages;
 
 public partial class Purchase
 {
@@ -29,10 +31,36 @@ public partial class Purchase
         Elements = PurchaseRepository.GetAll();
     }
 
-    protected async Task Update()
+    protected async Task ShowEdit(Guid id)
     {
-        await PurchaseRepository.FlushAsync();
-        Snackbar.Add("Updated Successfuly", Severity.Success);
+        var parameters = new DialogParameters<EditPurchases>();
+        parameters.Add(x => x.PurchaseId, id);
+
+        var options = new DialogOptions { DisableBackdropClick = true };
+
+        var dialog = DialogService.Show<EditPurchases>("Edit pruchases", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await PurchaseRepository.LoadAsync();
+        }
+    }
+
+    protected async Task ShowDelete(Guid id)
+    {
+        var parameters = new DialogParameters<DeletePurchases>();
+        parameters.Add(x => x.PurchaseId, id);
+
+        var options = new DialogOptions { DisableBackdropClick = true };
+
+        var dialog = DialogService.Show<DeletePurchases>("Delete pruchases", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await PurchaseRepository.LoadAsync();
+        }
     }
 
     private void BackupItem(object element)

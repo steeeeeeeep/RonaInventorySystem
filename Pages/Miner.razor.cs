@@ -131,6 +131,7 @@ public partial class Miner
                 Name = MinersName,
                 Code = CodeName,
                 Price = Price,
+                Status = "Pending",
                 CreatedAt = CreatedAt,
                 ProductId = ProductId
             };

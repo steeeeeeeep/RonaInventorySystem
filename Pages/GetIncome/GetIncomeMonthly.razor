@@ -8,6 +8,16 @@
 @inject BikeSparesInventorySystem.Data.Repositories.Repository<Contributions> ContributionRepository;
 @inject BikeSparesInventorySystem.Data.Services.AuthService AuthService;
 
+@if(_GetActiveContribution == null)
+{
+    <div style="height:100vh;width:100%">
+        <div class="d-flex justify-content-center align-items-center">
+            <h2 style="color:dimgray;text-align:center">Add contribution first!</h2>
+        </div>
+    </div>
+}
+else
+{
 <MudTable Items="@_MonthlySales"
           @bind-SelectedItem="@SelectedMonthlySale"
           FixedHeader="@Fixed_header"
@@ -53,14 +63,14 @@
             <MudTh Style="white-space: nowrap;">
                 <div class="d-flex flex-column justify-content-center">
                     <MudText Typo="Typo.body1" Class="p-0 m-0">Tithes</MudText>
-                    <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Tithes + "%" : "%")</MudText>
+                    <MudText Typo="Typo.overline" Class="p-0 m-0">@( _GetActiveContribution.Tithes + "%")</MudText>
                 </div>
             </MudTh>
             <MudTh Style="white-space: nowrap;">
                 <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Charity)">
                     <div class="d-flex flex-column justify-content-center">
                         <MudText Typo="Typo.body1" Class="p-0 m-0">Charity</MudText>
-                        <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Charity + "%" : "%")</MudText>
+                        <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContribution.Charity + "%")</MudText>
                     </div>
                 </MudTableSortLabel>
             </MudTh>
@@ -68,7 +78,7 @@
                 <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.Car)">
                     <div class="d-flex flex-column justify-content-center">
                         <MudText Typo="Typo.body1" Class="p-0 m-0">Car</MudText>
-                        <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.CarExpense + "%" : "%")</MudText>
+                        <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContribution.CarExpense + "%")</MudText>
                     </div>
                 </MudTableSortLabel>
             </MudTh>
@@ -76,7 +86,7 @@
                 <MudTableSortLabel SortBy="new Func<Sales, object>(x => x.OtherContribution)">
                     <div class="d-flex flex-column justify-content-center">
                         <MudText Typo="Typo.body1" Class="p-0 m-0">Others</MudText>
-                        <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContributions != null ? _GetActiveContributions.Others + "%" : "%")</MudText>
+                        <MudText Typo="Typo.overline" Class="p-0 m-0">@(_GetActiveContribution.Others + "%")</MudText>
                     </div>
                 </MudTableSortLabel>
             </MudTh>
@@ -97,3 +107,4 @@
             <MudTd Style="white-space: nowrap;" DataLabel="Action" />
         </RowTemplate>
 </MudTable>
+}

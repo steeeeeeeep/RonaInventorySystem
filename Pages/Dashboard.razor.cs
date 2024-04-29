@@ -52,7 +52,7 @@ public partial class Dashboard
                     },
                     Title = new Title()
                     {
-                        Text = "Inventory Items",
+                        Text = "Daily Sales",
                         Display = true,
                         Font = new PSC.Blazor.Components.Chartjs.Models.Common.Font()
                         {
@@ -75,7 +75,7 @@ public partial class Dashboard
                             },
                             Title = new AxesTitle()
                             {
-                                Text = "Spares",
+                                Text = "Sales",
                                 Display = true,
                                 Align= PSC.Blazor.Components.Chartjs.Models.Common.Align.Center,
                                 Font = axisLabelFont
@@ -141,7 +141,7 @@ public partial class Dashboard
 
             Config.Data.Labels.Add(sales.DailyDate.ToString("M/yyyy"));
 
-            Sales.Data.Add(sales.Profit);
+            Sales.Data.Add(sales.GrossSale);
 
 
             //List<Data.Models.ActivityLog> deductedStock = group.Where(x => x.Action == Data.Enums.StockAction.Deduct).ToList();

@@ -1,0 +1,40 @@
+﻿@inject BikeSparesInventorySystem.Data.Repositories.Repository<Expenses> ExpensesRepository
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="expenses.Name" Placeholder="Enter name" Label="Name" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudNumericField @bind-Value="expenses.Amount" HideSpinButtons=true Placeholder="Enter amount" Label="Amount" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudDatePicker @bind-Date="expenses.DateOfExpense" Placeholder="Enter date" Label="Date of Expense" />
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="cancel" Disabled="isSaving">Cancel</MudButton>
+        <MudButton OnClick="EditExpensesAsync"
+                   StartIcon="@Icons.Material.Filled.Save"
+                   Variant="Variant.Filled"
+                   Color="Color.Success"
+                   Disabled="isSaving">
+
+            @if (isSaving)
+            {
+                <p>Saving</p>
+                <MudProgressCircular Indeterminate=true />
+            }
+            else
+            {
+                <p>Save Changes</p>
+            }
+
+        </MudButton>
+
+    </DialogActions>
+</MudDialog>

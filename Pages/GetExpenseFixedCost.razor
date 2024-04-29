@@ -45,20 +45,28 @@
     </ColGroup>
     <HeaderContent>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Expenses, object>(x=>x.Name)">Name</MudTableSortLabel></MudTh>
-        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Expenses, object>(x=>x.DirectCostId)">Total Expenses</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Expenses, object>(x=>x.Amount)">Total Expenses</MudTableSortLabel></MudTh>
         <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<Expenses, object>(x=>x.DateOfExpense)">Date</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd Style="white-space: nowrap;" DataLabel="Name">@context.Name</MudTd>
-        <MudTd Style="white-space: nowrap;" DataLabel="Expenses">@context.DirectCostId</MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="Expenses">@context.Amount</MudTd>
         <MudTd Style="white-space: nowrap;" DataLabel="Date">@context.DateOfExpense?.ToString("MMM dd, yyyy")</MudTd>
+        <MudTd Style="white-space: nowrap;" DataLabel="Date">
+            @if(AuthService.IsUserAdmin())
+            {
+                <MudIconButton OnClick="() => ShowEdit(context.Id)" Icon="@Icons.Material.Filled.Edit" Color="Color.Success" />
+                <MudIconButton OnClick="() => ShowDelete(context.Id)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+            }
+        </MudTd>
     </RowTemplate>
     <RowEditingTemplate>
         <MudTd DataLabel="Name">
             <MudTextField @bind-Value="context.Name" />
         </MudTd>
         <MudTd DataLabel="Category">
-            <MudTextField @bind-Value="context.DirectCostId" />
+            <MudTextField @bind-Value="context.Amount" />
         </MudTd>
         <MudTd DataLabel="Price">
             <MudTextField @bind-Value="context.DateOfExpense" />

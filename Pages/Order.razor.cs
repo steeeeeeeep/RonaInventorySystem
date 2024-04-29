@@ -47,13 +47,18 @@ public partial class Order
             {
                 item.Status = SelectedStatus;
 
+                var product = ProductRepository.Get(x => x.Id, item.ProductId);
+
                 if (SelectedStatus == "Cancelled")
                 {
-                    var product = ProductRepository.Get(x => x.Id, item.ProductId);
                     product.AvailableQuantity++;
-
-                    await ProductRepository.FlushAsync();
                 }
+                else if(SelectedStatus == "Pending")
+                {
+                    product.AvailableQuantity--;
+                }
+
+                await ProductRepository.FlushAsync();
             }
 
         }
