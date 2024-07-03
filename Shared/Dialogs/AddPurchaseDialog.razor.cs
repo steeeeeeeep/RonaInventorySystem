@@ -15,7 +15,7 @@ public partial class AddPurchaseDialog
     private decimal Amount;
     private int Items;
     private DateTime ? Acquired;
-    private bool IsSaving;
+    private bool isSaving;
 
     protected sealed override void OnParametersSet()
     {
@@ -30,7 +30,7 @@ public partial class AddPurchaseDialog
         {
             try
             {
-                IsSaving = true;
+                isSaving = true;
                 var product = ProductRepository.Get(x => x.Id, ProductId);
                 Purchases purchases = new()
                 {
@@ -60,7 +60,7 @@ public partial class AddPurchaseDialog
             }
             finally 
             {
-                IsSaving = false;
+                isSaving = false;
             }
         }
     }

@@ -1,4 +1,7 @@
-﻿namespace BikeSparesInventorySystem.Pages.GetIncome;
+﻿using BikeSparesInventorySystem.Data.Models;
+using PSC.Blazor.Components.Chartjs.Models.Common;
+
+namespace BikeSparesInventorySystem.Pages.GetIncome;
 
 public partial class GetIncomeMonthly
 {
@@ -13,7 +16,6 @@ public partial class GetIncomeMonthly
     private IEnumerable<MonthlySales> _MonthlySales;
     private IEnumerable<Purchases> _Purchases;
     private IEnumerable<Expenses> _Expenses;
-    private IEnumerable<Contributions> _Contributions;
     private IEnumerable<Sales> _Sales;
     private Contributions _GetActiveContribution;
     private IEnumerable<Contributions> _GetActiveContributions;
@@ -56,7 +58,7 @@ public partial class GetIncomeMonthly
             return;
         }
         string[] date = a.Split('-');
-        //_MonthlySales = _sales.Where(d => d.Month.Year == int.Parse(date[0]) && d.Month.Month == int.Parse(date[1])).ToList();
+        _MonthlySales = _sales.Where(d => d.Month == int.Parse(date[0]) && d.Month == int.Parse(date[1])).ToList();
     }
 
     private async Task SyncSales()
@@ -69,15 +71,7 @@ public partial class GetIncomeMonthly
             {
                 Month = group.Key.Item1,
                 Year = group.Key.Item2,
-                GrossSale = group.Sum(s => s.GrossSale),
-                MonthlySale = group.Sum(s => s.DailyNetIncome),
-                Expense = group.Sum(s => s.Expenses),
-                _Purchase = group.Sum(s => s.Purchases),
-                Tithes = group.Sum(s => s.Tithes),
-                Car = group.Sum(s => s.Car),
-                Charity = group.Sum(s => s.Charity),
-                OtherContribution = group.Sum(s => s.OtherContribution),
-                Profit = group.Sum(s => s.Profit)
+                GrossSale = group.Sum(s => s.GrossSale)
             })
             .OrderBy(o => o.Month);
 
@@ -93,9 +87,10 @@ public partial class GetIncomeMonthly
             .Select(group => new
             {
                 Month = group.Key.Item1,
-                Year = group.Key.Item2,
-                Amount = group.Sum(s => s.Amount)
-            });
+				Year = group.Key.Item2,
+				Amount = group.Sum(s => s.Amount)
+			});
+
 
         if (!_Sales.Any())
         {
@@ -115,43 +110,29 @@ public partial class GetIncomeMonthly
             var getPurchase = getPurchaseList.Where(p => p.Month == sale.Month && p.Year == sale.Year).FirstOrDefault();
             if (!_MonthlySales.Any(a => a.Month == sale.Month && a.Year == sale.Year))
             {
-                if (getExpense != null || getPurchase != null)
-                {
-                    var monthlyIncome = sale.GrossSale - getPurchase?.Amount ?? 0 - getExpense?.Amount ?? 0;
-                    MonthlySales newMonthlySales = new()
-                    {
-                        GrossSale = sale.GrossSale,
-                        MonthlyNetIncome = monthlyIncome,
-                        Tithes = sale.Tithes,
-                        Car = sale.Car,
-                        Charity = sale.Charity,
-                        OtherContribution = sale.OtherContribution,
-                        Profit = monthlyIncome - (sale.Tithes + sale.Car + sale.Charity + sale.OtherContribution),
-                        Expenses = getExpense?.Amount ?? 0,
-                        Purchases = getPurchase?.Amount ?? 0,
-                        Month = sale.Month,
-                        Year = sale.Year
-                    };
+                var monthlyIncome = sale.GrossSale - getPurchase?.Amount ?? 0 - getExpense?.Amount ?? 0;
 
-                    MonthlySalesRepository.Add(newMonthlySales);
-                }
-                else
-                {
-                    MonthlySales newMonthlySales = new()
-                    {
-                        GrossSale = sale.GrossSale,
-                        MonthlyNetIncome = sale.GrossSale,
-                        Tithes = sale.Tithes,
-                        Car = sale.Car,
-                        Charity = sale.Charity,
-                        OtherContribution = sale.OtherContribution,
-                        Profit = sale.GrossSale - (sale.Tithes + sale.Car + sale.Charity + sale.OtherContribution),
-                        Month = sale.Month,
-                        Year = sale.Year
-                    };
+				var tithes = monthlyIncome * ((decimal)_GetActiveContribution.Tithes / 100);
+				var car = monthlyIncome * ((decimal)_GetActiveContribution.CarExpense / 100);
+				var charity = monthlyIncome * ((decimal)_GetActiveContribution.Charity / 100);
+				var otherContribution = monthlyIncome * ((decimal)_GetActiveContribution.Others / 100);
 
-                    MonthlySalesRepository.Add(newMonthlySales);
-                }
+				MonthlySales newMonthlySales = new()
+                {
+                    GrossSale = sale.GrossSale,
+                    MonthlyNetIncome = monthlyIncome,
+                    Tithes = tithes,
+                    Car = car,
+                    Charity = charity,
+                    OtherContribution = otherContribution,
+                    Profit = monthlyIncome - (tithes + car + charity + otherContribution),
+                    Expenses = getExpense?.Amount ?? 0,
+                    Purchases = getPurchase?.Amount ?? 0,
+                    Month = sale.Month,
+                    Year = sale.Year
+                };
+
+                MonthlySalesRepository.Add(newMonthlySales);
 
                 await MonthlySalesRepository.FlushAsync();
                 Snackbar.Add("Sales is updated!", Severity.Info);

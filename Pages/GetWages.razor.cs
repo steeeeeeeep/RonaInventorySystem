@@ -5,7 +5,7 @@ public partial class GetWages
 
     public const string Route = "/getWages";
 
-    private IEnumerable<Sales> _sales;
+    //private IEnumerable<Sales> _sales;
     private IEnumerable<Wages> _wages;
 
     [CascadingParameter]
@@ -17,14 +17,14 @@ public partial class GetWages
         _wages = WagesRepository.GetAll();
     } 
 
-    protected async Task LoadData()
-    {
-        _sales = SalesRepository.GetAll();
+    //protected async Task LoadData()
+    //{
+    //    _sales = SalesRepository.GetAll();
 
-        Wages wages = new Wages()
-        {
+    //    Wages wages = new Wages()
+    //    {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-        };
-    }
+    //    };
+    //}
 
 }

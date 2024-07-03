@@ -34,6 +34,18 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" >Cancel</MudButton>
-        <MudButton OnClick="AddPurchase" Variant="Variant.Filled" Color="Color.Primary" >Add Purchase</MudButton>
+        <MudButton OnClick="AddPurchase" Variant="Variant.Filled" Color="Color.Primary" >
+            
+             @if (isSaving)
+            {
+                <p>Saving</p>
+                <MudProgressCircular Indeterminate=true />
+            }
+            else
+            {
+                <p>Add Purchase</p>
+            }
+
+        </MudButton>
     </DialogActions>
 </MudDialog>

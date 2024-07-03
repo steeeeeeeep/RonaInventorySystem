@@ -9,7 +9,7 @@ public partial class GetIncomeDaily
     private readonly bool Fixed_footer = true;
     private readonly bool Hover = true;
     private readonly bool ReadOnly = false;
-    private readonly bool BlockSwitch = true;
+    //private readonly bool BlockSwitch = true;
     private Sales SelectedItem;
     private Sales ElementBeforeEdit;
     private readonly TableApplyButtonPosition ApplyButtonPosition = TableApplyButtonPosition.End;

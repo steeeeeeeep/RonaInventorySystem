@@ -9,22 +9,22 @@ public partial class AddSpareDialog
     public bool _error;
 
     private string Name;
-    private string Description;
-    private Guid CategoryId;
-    private decimal Price;
-    private int AvailableQuantity;
-    private int ActualQuantity;
-    private IEnumerable<Category> Elements;
+    //private string Description;
+    //private Guid CategoryId;
+    //private decimal Price;
+    //private int AvailableQuantity;
+    //private int ActualQuantity;
+    //private IEnumerable<Category> Elements;
 
     private void Cancel()
     {
         MudDialog.Cancel();
     }
 
-    protected sealed override void OnParametersSet()
-    {
-        Elements = CategoryRepository.GetAll();
-    }
+    //protected sealed override void OnParametersSet()
+    //{
+    //    Elements = CategoryRepository.GetAll();
+    //}
 
     private async Task AddSpare()
     {
@@ -36,11 +36,11 @@ public partial class AddSpareDialog
                 Spare spare = new()
                 {
                     Name = Name,
-                    Description = Description,
-                    CategoryId = CategoryId,
-                    Price = Price,
-                    ActualQuantity = ActualQuantity,
-                    AvailableQuantity = AvailableQuantity,
+                    //Description = Description,
+                    //CategoryId = CategoryId,
+                    //Price = Price,
+                    //ActualQuantity = ActualQuantity,
+                    //AvailableQuantity = AvailableQuantity,
                 };
                 SpareRepository.Add(spare);
                 await SpareRepository.FlushAsync();

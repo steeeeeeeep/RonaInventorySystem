@@ -5,7 +5,7 @@
 		<MudText Color="Color.Primary" Typo="Typo.h5" Style="font-weight: bold; font-family:'Bodoni MT'">Just A Steward</MudText>
 	</MudStack>
 </MudDrawerHeader>
-<MudNavMenu Bordered="true" Color="Color.Primary" Margin="Margin.Normal" Style="scrollbar-width: 1px; scrollbar-color: inherit; scrollbar-base-color:transparent">
+<MudNavMenu Bordered="true" Color="Color.Primary" Margin="Margin.Normal" Style="scrollbar-width: 1; scrollbar-color: inherit; scrollbar-base-color:transparent">
 	@if (AuthService.IsUserAdmin())
 	{
 		<MudNavLink Href="@Dashboard.Route" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>

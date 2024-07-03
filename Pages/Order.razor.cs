@@ -10,14 +10,14 @@ public partial class Order
     private readonly bool Hover = true;
     private bool ReadOnly = false;
     private readonly bool CanCancelEdit = true;
-    private readonly bool BlockSwitch = true;
+    //private readonly bool BlockSwitch = true;
     private HashSet<Miners> SelectedItems { get; set; } = new HashSet<Miners>();
     private string SelectedStatus = string.Empty;
     private Miners SelectedItem;
-    private Miners ElementBeforeEdit;
-    private readonly TableApplyButtonPosition ApplyButtonPosition = TableApplyButtonPosition.End;
-    private readonly TableEditButtonPosition EditButtonPosition = TableEditButtonPosition.End;
-    private readonly TableEditTrigger EditTrigger = TableEditTrigger.EditButton;
+    //private Miners ElementBeforeEdit;
+    //private readonly TableApplyButtonPosition ApplyButtonPosition = TableApplyButtonPosition.End;
+    //private readonly TableEditButtonPosition EditButtonPosition = TableEditButtonPosition.End;
+    //private readonly TableEditTrigger EditTrigger = TableEditTrigger.EditButton;
     private string SearchString;
     private IEnumerable<Miners> Miners;
     bool IsSelectionActive => SelectedItems?.Any() ?? false;
@@ -49,11 +49,11 @@ public partial class Order
 
                 var product = ProductRepository.Get(x => x.Id, item.ProductId);
 
-                if (SelectedStatus == "Cancelled")
+                if (SelectedStatus == "Cancelled" && item.Status != "Cancelled")
                 {
                     product.AvailableQuantity++;
                 }
-                else if(SelectedStatus == "Pending")
+                else if(SelectedStatus == "Pending" && item.Status != "Pending")
                 {
                     product.AvailableQuantity--;
                 }
@@ -74,8 +74,10 @@ public partial class Order
 
     protected async Task Update(Guid id)
     {
-        var parameters = new DialogParameters<UpdateOrders>();
-        parameters.Add("id", id);
+        var parameters = new DialogParameters<UpdateOrders>
+        {
+            { "id", id }
+        };
 
         var options = new DialogOptions { DisableBackdropClick = true };
 
@@ -89,17 +91,17 @@ public partial class Order
     }
 
 
-    private void BackupItem(object element)
-    {
-        ElementBeforeEdit = ((Miners)element).Clone() as Miners;
-    }
+    //private void BackupItem(object element)
+    //{
+    //    ElementBeforeEdit = ((Miners)element).Clone() as Miners;
+    //}
 
-    private void ResetItemToOriginalValues(object element)
-    {
-        ((Miners)element).Name = ElementBeforeEdit.Name;
-        ((Miners)element).Code = ElementBeforeEdit.Code;
-        ((Miners)element).Price = ElementBeforeEdit.Price;
-    }
+    //private void ResetItemToOriginalValues(object element)
+    //{
+    //    ((Miners)element).Name = ElementBeforeEdit.Name;
+    //    ((Miners)element).Code = ElementBeforeEdit.Code;
+    //    ((Miners)element).Price = ElementBeforeEdit.Price;
+    //}
 
     private bool FilterFunc(Miners miner)
     {

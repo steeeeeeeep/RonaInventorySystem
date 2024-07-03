@@ -17,9 +17,9 @@ public partial class Purchase
     //private Purchases SelectedItem;
     private Purchases ElementBeforeEdit;    
 
-    private readonly TableApplyButtonPosition ApplyButtonPosition = TableApplyButtonPosition.End;
-    private readonly TableEditButtonPosition EditButtonPosition = TableEditButtonPosition.End;
-    private readonly TableEditTrigger EditTrigger = TableEditTrigger.EditButton;
+    //private readonly TableApplyButtonPosition ApplyButtonPosition = TableApplyButtonPosition.End;
+    //private readonly TableEditButtonPosition EditButtonPosition = TableEditButtonPosition.End;
+    //private readonly TableEditTrigger EditTrigger = TableEditTrigger.EditButton;
     private IEnumerable<Purchases> Elements;
 
     [CascadingParameter]

@@ -13,7 +13,7 @@ public partial class Miner
     private bool ReadOnly = false;
     private readonly bool CanCancelEdit = true;
     private readonly bool BlockSwitch = true;
-    private Miners SelectedItem;
+    //private Miners SelectedItem;
     private Miners ElementBeforeEdit;
     private readonly TableApplyButtonPosition ApplyButtonPosition = TableApplyButtonPosition.End;
     private readonly TableEditButtonPosition EditButtonPosition = TableEditButtonPosition.End;
@@ -37,9 +37,9 @@ public partial class Miner
     private bool IsSaving = false;
     private bool IsDisabled = true;
 
-    private Dictionary<string, Miners> uniqueMiners = new Dictionary<string, Miners>();
-    private Dictionary<string, int> orderCounts = new Dictionary<string, int>();
-    private Dictionary<string, decimal> totalPrices = new Dictionary<string, decimal>();
+    private Dictionary<string, Miners> uniqueMiners = new();
+    private Dictionary<string, int> orderCounts = new();
+    private Dictionary<string, decimal> totalPrices = new ();
 
     protected sealed override async Task OnParametersSetAsync()
     {
